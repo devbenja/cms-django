@@ -1,0 +1,10 @@
+{# Block: heading #}
+{% with level=block.level|default:2 %}
+  {% if level == 1 %}
+    <h1 class="text-3xl md:text-4xl font-bold text-cms-text-primary mt-8 mb-4 font-data">{{ block.text|safe }}</h1>
+  {% elif level == 2 %}
+    <h2 class="text-2xl md:text-3xl font-bold text-cms-text-primary mt-8 mb-3 font-data">{{ block.text|safe }}</h2>
+  {% else %}
+    <h3 class="text-xl md:text-2xl font-semibold text-cms-text-primary mt-6 mb-2 font-data">{{ block.text|safe }}</h3>
+  {% endif %}
+{% endwith %}

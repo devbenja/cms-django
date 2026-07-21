@@ -1,0 +1,42 @@
+{% extends 'base.html' %}
+
+{% block title %}Testimonios — {{ site_config.site_name|default:"Constructora" }}{% endblock %}
+
+{% block content %}
+<section class="max-w-5xl mx-auto px-4 sm:px-6 lg:px-8 py-12">
+  <div class="mb-10 text-center">
+    <p class="text-cms-brand-secondary text-sm font-semibold uppercase tracking-wider mb-2">Confían en nosotros</p>
+    <h1 class="text-3xl md:text-5xl font-bold text-cms-text-primary font-data">Testimonios</h1>
+  </div>
+  {% if testimonials %}
+    <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
+      {% for t in testimonials %}
+        <div class="bg-cms-surface rounded-lg p-6 shadow-sm border border-cms-border">
+          <svg class="w-8 h-8 text-cms-brand-secondary mb-3" fill="currentColor" viewBox="0 0 24 24"><path d="M6 17h3l2-4V7H5v6h3zm8 0h3l2-4V7h-6v6h3z"/></svg>
+          <p class="text-text-cms-text-primary italic mb-4 leading-relaxed">"{{ t.quote }}"</p>
+          <div class="flex items-center gap-3 pt-3 border-t border-cms-border">
+            {% if t.client_photo %}
+              <img src="{{ t.client_photo.url }}" alt="{{ t.client_name }}" class="w-12 h-12 rounded-full object-cover">
+            {% else %}
+              <div class="w-12 h-12 rounded-full bg-cms-brand-secondary-soft flex items-center justify-center text-cms-brand-primary font-semibold">
+                {{ t.client_name|slice:":1"|upper }}
+              </div>
+            {% endif %}
+            <div>
+              <p class="font-semibold text-cms-text-primary">{{ t.client_name }}</p>
+              {% if t.client_role or t.client_company %}
+                <p class="text-sm text-text-cms-text-secondary">{% if t.client_role %}{{ t.client_role }}{% endif %}{% if t.client_role and t.client_company %}, {% endif %}{% if t.client_company %}{{ t.client_company }}{% endif %}</p>
+              {% endif %}
+              {% if t.related_work %}
+                <p class="text-xs text-text-cms-text-muted mt-1">Proyecto: <a href="{% url 'portfolio_detail' t.related_work.slug %}" class="text-cms-brand-primary hover:underline">{{ t.related_work.title }}</a></p>
+              {% endif %}
+            </div>
+          </div>
+        </div>
+      {% endfor %}
+    </div>
+  {% else %}
+    <p class="text-center text-text-cms-text-secondary py-16">Aún no hay testimonios publicados.</p>
+  {% endif %}
+</section>
+{% endblock %}

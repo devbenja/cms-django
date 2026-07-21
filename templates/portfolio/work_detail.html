@@ -1,0 +1,233 @@
+{% extends 'base.html' %}
+{% load static %}
+
+{% block title %}{{ work.title }} — {{ site_config.site_name|default:"Constructora" }}{% endblock %}
+{% block meta_description %}{{ work.description_short|default:work.title }}{% endblock %}
+
+{% block extra_head %}
+<script>
+  function lightbox() {
+    return {
+      open: false,
+      index: 0,
+      photos: [],
+      show(idx) { this.index = idx; this.open = true; document.body.style.overflow = 'hidden'; },
+      close() { this.open = false; document.body.style.overflow = ''; },
+      next() { this.index = (this.index + 1) % this.photos.length; },
+      prev() { this.index = (this.index - 1 + this.photos.length) % this.photos.length; },
+      init() {
+        this.photos = {{ photos_json|safe }};
+        document.addEventListener('keydown', (e) => {
+          if (!this.open) return;
+          if (e.key === 'Escape') this.close();
+          if (e.key === 'ArrowRight') this.next();
+          if (e.key === 'ArrowLeft') this.prev();
+        });
+      }
+    }
+  }
+</script>
+{% endblock %}
+
+{% block content %}
+
+{# ===================== BREADCRUMB ===================== #}
+<nav class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 pt-6 text-xs text-text-cms-text-secondary uppercase tracking-widest font-data" aria-label="Breadcrumb">
+  <a href="{% url 'home' %}" class="hover:text-cms-brand-primary">Inicio</a>
+  <span class="mx-2 text-text-cms-text-muted">/</span>
+  <a href="{% url 'portfolio_list' %}" class="hover:text-cms-brand-primary">Proyectos</a>
+  <span class="mx-2 text-text-cms-text-muted">/</span>
+  <span class="text-text-cms-text-primary">{{ work.title }}</span>
+</nav>
+
+{# ===================== HERO EDITORIAL (foto + ficha superpuesta) ===================== #}
+{# Inspirado en National Geographic / NYT: la foto manda, la ficha vive en una banda inferior. #}
+<section x-data="lightbox()" class="relative bg-cms-surface-dark text-cms-text-inverse mt-6">
+  {% if work.display_cover %}
+    <button @click="show(0)" class="block w-full">
+      <div class="relative h-[60vh] md:h-[80vh] max-h-[800px] overflow-hidden">
+        <img src="{{ work.display_cover.image.url }}" alt="{{ work.display_cover.alt_text }}" class="w-full h-full object-cover">
+        <div class="absolute inset-0 bg-gradient-to-t from-surface-dark via-surface-dark/40 to-transparent"></div>
+      </div>
+    </button>
+  {% endif %}
+
+  <div class="absolute bottom-0 left-0 right-0">
+    <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 pb-10 md:pb-16">
+      <p class="eyebrow text-cms-brand-secondary mb-3 font-data">{{ work.category.name }} · {{ work.year }}</p>
+      <h1 class="h-display text-cms-text-inverse max-w-4xl mb-6">{{ work.title }}</h1>
+      {% if work.description_short %}
+        <p class="text-lg md:text-xl text-cms-border max-w-2xl leading-relaxed">{{ work.description_short }}</p>
+      {% endif %}
+    </div>
+  </div>
+</section>
+
+{# ===================== LIGHTBOX ===================== }
+<div x-data="lightbox()" x-show="open" x-cloak
+     @click.self="close()"
+     class="fixed inset-0 z-50 bg-black/95 flex items-center justify-center p-4">
+  <button @click="close()" class="absolute top-4 right-4 text-white hover:text-cms-brand-secondary">
+    <svg class="w-8 h-8" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M6 18L18 6M6 6l12 12"/></svg>
+  </button>
+  <button @click.stop="prev()" class="absolute left-4 text-white hover:text-cms-brand-secondary">
+    <svg class="w-10 h-10" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 19l-7-7 7-7"/></svg>
+  </button>
+  <button @click.stop="next()" class="absolute right-4 text-white hover:text-cms-brand-secondary">
+    <svg class="w-10 h-10" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 5l7 7-7 7"/></svg>
+  </button>
+  <template x-if="open && photos.length">
+    <div class="max-w-5xl max-h-[85vh] flex flex-col items-center">
+      <img :src="photos[index].url" :alt="photos[index].alt" class="max-w-full max-h-[80vh] object-contain">
+      <div class="mt-3 text-white text-sm font-data uppercase tracking-widest" x-text="`${index + 1} / ${photos.length}`"></div>
+    </div>
+  </template>
+</div>
+
+{# ===================== META + CTA EN BANDA ===================== }
+<section class="bg-cms-surface-dark text-cms-text-inverse border-t border-cms-brand-primary-hover">
+  <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-8">
+    <div class="grid grid-cols-2 md:grid-cols-5 gap-6 items-center">
+      <div>
+        <p class="eyebrow text-text-cms-text-muted mb-1">Ubicación</p>
+        <p class="font-semibold">{{ work.location }}</p>
+      </div>
+      <div>
+        <p class="eyebrow text-text-cms-text-muted mb-1">Año</p>
+        <p class="font-semibold font-data">{{ work.year }}</p>
+      </div>
+      {% if work.client %}
+      <div>
+        <p class="eyebrow text-text-cms-text-muted mb-1">Cliente</p>
+        <p class="font-semibold">{{ work.client }}</p>
+      </div>
+      {% endif %}
+      <div>
+        <p class="eyebrow text-text-cms-text-muted mb-1">Categoría</p>
+        <p class="font-semibold">{{ work.category.name }}</p>
+      </div>
+      <div class="col-span-2 md:col-span-1">
+        <a href="{% url 'page-contact' %}?obra={{ work.slug }}" class="btn-ghost w-full">Contactar</a>
+      </div>
+    </div>
+  </div>
+</section>
+
+{# ===================== CUERPO DEL PROYECTO ===================== }
+{% if work.body %}
+<section class="bg-cms-canvas py-20 md:py-28">
+  <div class="max-w-5xl mx-auto px-4 sm:px-6 lg:px-8">
+    <div class="grid grid-cols-1 md:grid-cols-12 gap-12">
+      {# Sidebar con ficha técnica (3 cols) #}
+      <aside class="md:col-span-3 md:sticky md:top-32 md:self-start">
+        <h3 class="eyebrow text-text-cms-text-muted mb-6">Ficha técnica</h3>
+        <dl class="space-y-4 text-sm border-t border-cms-border pt-6">
+          <div>
+            <dt class="text-text-cms-text-muted text-xs uppercase tracking-widest">Categoría</dt>
+            <dd class="text-cms-text-primary font-semibold">{{ work.category.name }}</dd>
+          </div>
+          <div>
+            <dt class="text-text-cms-text-muted text-xs uppercase tracking-widest">Año</dt>
+            <dd class="text-cms-text-primary font-semibold font-data">{{ work.year }}</dd>
+          </div>
+          <div>
+            <dt class="text-text-cms-text-muted text-xs uppercase tracking-widest">Ubicación</dt>
+            <dd class="text-cms-text-primary font-semibold">{{ work.location }}</dd>
+          </div>
+          {% if work.client %}
+          <div>
+            <dt class="text-text-cms-text-muted text-xs uppercase tracking-widest">Cliente</dt>
+            <dd class="text-cms-text-primary font-semibold">{{ work.client }}</dd>
+          </div>
+          {% endif %}
+          <div>
+            <dt class="text-text-cms-text-muted text-xs uppercase tracking-widest">Estado</dt>
+            <dd><span class="badge badge-published">✓ Finalizado</span></dd>
+          </div>
+        </dl>
+      </aside>
+
+      {# Bloques JSONField (9 cols) #}
+      <div class="md:col-span-9">
+        {% load blocks %}
+        {% render_blocks work.body %}
+      </div>
+    </div>
+  </div>
+</section>
+{% endif %}
+
+{# ===================== GALERÍA COMPLETA ===================== #}
+{% if photos|length > 1 %}
+<section x-data="lightbox()" class="bg-cms-surface-alt py-20 md:py-28">
+  <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+    <div class="flex items-end justify-between mb-12">
+      <div>
+        <p class="eyebrow text-cms-brand-secondary mb-3">Galería</p>
+        <h2 class="h-section text-cms-text-primary">Imágenes del proyecto</h2>
+      </div>
+      <p class="text-xs text-text-cms-text-muted font-data uppercase tracking-widest hidden md:block">
+        {{ photos|length }} fotos · Click para ampliar
+      </p>
+    </div>
+    <div class="columns-1 sm:columns-2 md:columns-3 gap-4 space-y-4">
+      {% for photo in photos %}
+        <button @click="show({{ forloop.counter0 }})" class="block w-full break-inside-avoid mb-4 overflow-hidden bg-cms-surface group">
+          <img src="{{ photo.image.url }}" alt="{{ photo.alt_text }}" class="w-full h-auto group-hover:opacity-90 transition-opacity">
+          {% if photo.caption %}<span class="block text-xs text-text-cms-text-secondary p-3 bg-cms-surface text-left font-data">{{ photo.caption }}</span>{% endif %}
+        </button>
+      {% endfor %}
+    </div>
+  </div>
+</section>
+{% endif %}
+
+{# ===================== OTRAS OBRAS (cross-sell) ===================== #}
+{% if other_works %}
+<section class="bg-cms-canvas py-20 md:py-28 border-t border-cms-border">
+  <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+    <div class="flex items-end justify-between mb-12">
+      <div>
+        <p class="eyebrow text-cms-brand-secondary mb-3">Más proyectos</p>
+        <h2 class="h-section text-cms-text-primary">Otras obras</h2>
+      </div>
+      <a href="{% url 'portfolio_list' %}" class="hidden md:inline-flex link-underline font-semibold text-cms-brand-primary text-sm uppercase tracking-widest">
+        Ver todos →
+      </a>
+    </div>
+    <div class="grid grid-cols-1 md:grid-cols-3 gap-8">
+      {% for w in other_works %}
+        <a href="{% url 'portfolio_detail' w.slug %}" class="group block">
+          <div class="aspect-[4/3] overflow-hidden bg-cms-surface-alt mb-4">
+            {% if w.display_cover %}
+              <img src="{{ w.display_cover.image.url }}" alt="{{ w.display_cover.alt_text }}" class="w-full h-full object-cover group-hover:scale-105 transition-transform duration-500">
+            {% endif %}
+          </div>
+          <p class="eyebrow text-cms-brand-secondary mb-2 font-data">{{ w.category.name }} · {{ w.year }}</p>
+          <h3 class="h-card text-cms-text-primary group-hover:text-cms-brand-primary transition-colors">{{ w.title }}</h3>
+          <p class="text-sm text-text-cms-text-muted font-data mt-1">{{ w.location }}</p>
+        </a>
+      {% endfor %}
+    </div>
+  </div>
+</section>
+{% endif %}
+
+{# ===================== CTA INTERMEDIO ===================== }
+<section class="bg-cms-surface-dark text-cms-text-inverse">
+  <div class="max-w-5xl mx-auto px-4 sm:px-6 lg:px-8 py-20 md:py-28 text-center">
+    <p class="eyebrow text-cms-brand-secondary mb-4">¿Tenés un proyecto en mente?</p>
+    <h2 class="h-section text-cms-text-inverse mb-6">Hablemos de cómo hacerlo realidad.</h2>
+    <p class="text-lg text-cms-border max-w-2xl mx-auto mb-10">
+      Más de 25 años construyendo Nicaragua. Contactanos y te respondemos en menos de 24 horas.
+    </p>
+    <div class="flex flex-col sm:flex-row gap-3 justify-center">
+      <a href="{% url 'page-contact' %}" class="btn-primary bg-inverse text-cms-brand-primary hover:bg-cms-surface-alt">Contactanos</a>
+      {% if site_config.contact_whatsapp %}
+        <a href="https://wa.me/{{ site_config.contact_whatsapp }}" target="_blank" rel="noopener" class="btn-ghost">Escribinos por WhatsApp</a>
+      {% endif %}
+    </div>
+  </div>
+</section>
+
+{% endblock %}

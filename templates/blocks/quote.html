@@ -1,0 +1,9 @@
+{# Block: quote #}
+<blockquote class="my-8 pl-6 border-l-4 border-brand-secondary bg-cms-surface-alt py-4 pr-4 rounded-r">
+  <p class="text-lg italic text-cms-text-primary leading-relaxed">{{ block.text|safe }}</p>
+  {% if block.author %}
+    <footer class="mt-3 text-sm text-text-cms-text-secondary">
+      — <strong>{{ block.author }}</strong>{% if block.role %}, <span class="text-text-cms-text-muted">{{ block.role }}</span>{% endif %}
+    </footer>
+  {% endif %}
+</blockquote>

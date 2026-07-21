@@ -1,0 +1,17 @@
+{# Block: gallery #}
+{# photo_ids: list of WorkPhoto PKs. We pre-resolve them in the view via a context variable.
+   The template receives a 'photos' list of WorkPhoto objects if the view resolved them. #}
+{% with cols=block.columns|default:3 %}
+  <div class="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-{{ cols }} gap-4 my-8">
+    {% if photos %}
+      {% for photo in photos %}
+        <figure class="rounded-lg overflow-hidden shadow-md">
+          <img src="{{ photo.image.url }}" alt="{{ photo.alt_text }}" class="w-full h-48 object-cover hover:scale-105 transition-transform duration-300">
+          {% if photo.caption %}<figcaption class="text-xs text-text-cms-text-secondary p-2 bg-cms-surface-alt">{{ photo.caption }}</figcaption>{% endif %}
+        </figure>
+      {% endfor %}
+    {% else %}
+      <p class="text-text-cms-text-muted italic">Galería sin fotos.</p>
+    {% endif %}
+  </div>
+{% endwith %}

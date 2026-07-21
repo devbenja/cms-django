@@ -1,0 +1,10 @@
+{# Block: list #}
+{% if block.ordered %}
+  <ol class="list-decimal list-inside my-5 space-y-2 text-text-cms-text-primary">
+    {% for item in block.items %}<li>{{ item|safe }}</li>{% endfor %}
+  </ol>
+{% else %}
+  <ul class="list-disc list-inside my-5 space-y-2 text-text-cms-text-primary">
+    {% for item in block.items %}<li>{{ item|safe }}</li>{% endfor %}
+  </ul>
+{% endif %}

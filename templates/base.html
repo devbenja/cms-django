@@ -1,0 +1,233 @@
+{% load static %}
+<!DOCTYPE html>
+<html lang="es-NI">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>{% block title %}{{ site_config.site_name|default:"Constructora" }}{% endblock %}</title>
+  <meta name="description" content="{% block meta_description %}{{ site_config.tagline|default:'' }}{% endblock %}">
+
+  {# Tailwind CDN con tokens de marca #}
+  <script src="https://cdn.tailwindcss.com"></script>
+  <script>
+    // Tailwind CDN config: mapea clases con prefijo 'cms-' a las variables CSS.
+    // Usamos prefijo 'cms-' para evitar colisiones con colores default de Tailwind.
+    tailwind.config = {
+      theme: {
+        extend: {
+          colors: {
+            'cms-canvas': 'var(--color-canvas)',
+            'cms-surface': 'var(--color-surface)',
+            'cms-surface-alt': 'var(--color-surface-alt)',
+            'cms-surface-dark': 'var(--color-surface-dark)',
+            'cms-border': 'var(--color-border)',
+            'cms-text-cms-text-primary': 'var(--color-text-cms-text-primary)',
+            'cms-text-cms-text-secondary': 'var(--color-text-cms-text-secondary)',
+            'cms-text-cms-text-muted': 'var(--color-text-cms-text-muted)',
+            'cms-text-cms-text-inverse': 'var(--color-text-cms-text-inverse)',
+            'cms-brand-primary': 'var(--color-brand-primary)',
+            'cms-brand-primary-hover': 'var(--color-brand-primary-hover)',
+            'cms-brand-secondary': 'var(--color-brand-secondary)',
+            'cms-brand-secondary-soft': 'var(--color-brand-secondary-soft)',
+          }
+        }
+      }
+    }
+  </script>
+  <link rel="stylesheet" href="{% static 'css/tokens.css' %}">
+
+  {# Tipografía: Inter (body) + Archivo (display para hero, stats, H1) #}
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Archivo:wght@400;700;900&family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
+
+  {# Alpine.js para nav mobile, lightbox y microinteracciones #}
+  <script defer src="https://unpkg.com/alpinejs@3.x.x/dist/cdn.min.js"></script>
+
+  {% block extra_head %}{% endblock %}
+</head>
+<body class="min-h-screen flex flex-col">
+
+  {# ===================== HEADER ===================== #}
+  {# Header editorial: línea superior con tagline, luego header sólido con logo + nav #}
+  <div class="bg-cms-surface-dark text-cms-text-inverse text-xs font-data">
+    <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-2 flex items-center justify-between border-b border-cms-brand-primary-hover">
+      <span class="hidden md:inline text-cms-border uppercase tracking-widest">{{ site_config.tagline|default:"" }}</span>
+      <div class="flex items-center gap-4 ml-auto">
+        {% if site_config.contact_phone %}
+          <a href="tel:{{ site_config.contact_phone }}" class="hidden sm:inline hover:text-cms-brand-secondary">{{ site_config.contact_phone }}</a>
+        {% endif %}
+        {% if site_config.contact_email %}
+          <a href="mailto:{{ site_config.contact_email }}" class="hidden sm:inline hover:text-cms-brand-secondary">{{ site_config.contact_email }}</a>
+        {% endif %}
+      </div>
+    </div>
+  </div>
+
+  <header class="bg-cms-surface-dark text-cms-text-inverse sticky top-0 z-40 shadow-md">
+    <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+      <div class="flex items-center justify-between h-20">
+        {# Logo + nombre (con tipografía display) #}
+        <a href="{% url 'home' %}" class="flex items-center gap-3 font-display text-xl tracking-tight">
+          {% if site_config.logo %}
+            <img src="{{ site_config.logo.url }}" alt="{{ site_config.site_name }}" class="h-10 w-10 object-contain">
+          {% else %}
+            <span class="w-10 h-10 bg-cms-brand-secondary text-surface-dark flex items-center justify-center font-display text-xl">
+              {{ site_config.site_name|default:"C"|slice:":1"|upper }}
+            </span>
+          {% endif %}
+          <span>{{ site_config.site_name|default:"Constructora" }}</span>
+        </a>
+
+        {# Nav desktop — uppercase tracking-wide para sentir "industrial" #}
+        <nav class="hidden md:flex items-center gap-1 text-xs uppercase tracking-widest font-semibold">
+          <a href="{% url 'home' %}" class="px-4 py-2 hover:text-cms-brand-secondary transition-colors">Inicio</a>
+          <a href="{% url 'page-about' %}" class="px-4 py-2 hover:text-cms-brand-secondary transition-colors">Nosotros</a>
+          <a href="{% url 'page-services' %}" class="px-4 py-2 hover:text-cms-brand-secondary transition-colors">Servicios</a>
+          <a href="{% url 'portfolio_list' %}" class="px-4 py-2 hover:text-cms-brand-secondary transition-colors">Proyectos</a>
+          <a href="{% url 'testimonial_list' %}" class="px-4 py-2 hover:text-cms-brand-secondary transition-colors">Testimonios</a>
+          <a href="{% url 'faq_list' %}" class="px-4 py-2 hover:text-cms-brand-secondary transition-colors">FAQs</a>
+          <a href="{% url 'page-contact' %}" class="px-4 py-2 hover:text-cms-brand-secondary transition-colors">Contacto</a>
+        </nav>
+
+        {# CTA WhatsApp desktop #}
+        {% if site_config.contact_whatsapp %}
+          <a href="https://wa.me/{{ site_config.contact_whatsapp }}" target="_blank" rel="noopener"
+             class="hidden md:inline-flex btn-whatsapp text-xs uppercase tracking-widest">
+            <svg class="w-4 h-4" fill="currentColor" viewBox="0 0 24 24"><path d="M17.472 14.382c-.297-.149-1.758-.867-2.03-.967-.273-.099-.471-.148-.67.15-.197.297-.767.966-.94 1.164-.173.199-.347.223-.644.075-.297-.15-1.255-.463-2.39-1.475-.883-.788-1.48-1.761-1.653-2.059-.173-.297-.018-.458.13-.606.134-.133.298-.347.446-.52.149-.174.198-.298.298-.497.099-.198.05-.371-.025-.52-.075-.149-.669-1.612-.916-2.207-.242-.579-.487-.5-.669-.51-.173-.008-.371-.01-.57-.01-.198 0-.52.074-.792.372-.272.297-1.04 1.016-1.04 2.479 0 1.462 1.065 2.875 1.213 3.074.149.198 2.096 3.2 5.077 4.487.709.306 1.262.489 1.694.625.712.227 1.36.195 1.871.118.571-.085 1.758-.719 2.006-1.413.248-.694.248-1.289.173-1.413-.074-.124-.272-.198-.57-.347m-5.421 7.403h-.004a9.87 9.87 0 01-5.031-1.378l-.361-.214-3.741.982.998-3.648-.235-.374a9.86 9.86 0 01-1.51-5.26c.001-5.45 4.436-9.884 9.888-9.884 2.64 0 5.122 1.03 6.988 2.898a9.825 9.825 0 012.893 6.994c-.003 5.45-4.437 9.884-9.885 9.884m8.413-18.297A11.815 11.815 0 0012.05 0C5.495 0 .16 5.335.157 11.892c0 2.096.547 4.142 1.588 5.945L.057 24l6.305-1.654a11.882 11.882 0 005.683 1.448h.005c6.554 0 11.89-5.335 11.893-11.893a11.821 11.821 0 00-3.48-8.413Z"/></svg>
+            WhatsApp
+          </a>
+        {% endif %}
+
+        {# Botón hamburguesa mobile #}
+        <button x-data="{ open: false }" @click="open = !open" class="md:hidden p-2 hover:text-cms-brand-secondary">
+          <svg class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+            <path x-show="!open" stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 6h16M4 12h16M4 18h16"/>
+            <path x-show="open" stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M6 18L18 6M6 6l12 12"/>
+          </svg>
+        </button>
+      </div>
+
+      {# Menú mobile (colapsable) #}
+      <div x-data="{ open: false }" class="md:hidden pb-4" x-show="open" x-cloak>
+        <nav class="flex flex-col gap-1 text-sm uppercase tracking-widest font-semibold">
+          <a href="{% url 'home' %}" class="px-3 py-2 hover:bg-cms-brand-primary-hover">Inicio</a>
+          <a href="{% url 'page-about' %}" class="px-3 py-2 hover:bg-cms-brand-primary-hover">Nosotros</a>
+          <a href="{% url 'page-services' %}" class="px-3 py-2 hover:bg-cms-brand-primary-hover">Servicios</a>
+          <a href="{% url 'portfolio_list' %}" class="px-3 py-2 hover:bg-cms-brand-primary-hover">Proyectos</a>
+          <a href="{% url 'testimonial_list' %}" class="px-3 py-2 hover:bg-cms-brand-primary-hover">Testimonios</a>
+          <a href="{% url 'faq_list' %}" class="px-3 py-2 hover:bg-cms-brand-primary-hover">FAQs</a>
+          <a href="{% url 'page-contact' %}" class="px-3 py-2 hover:bg-cms-brand-primary-hover">Contacto</a>
+          {% if site_config.contact_whatsapp %}
+            <a href="https://wa.me/{{ site_config.contact_whatsapp }}" target="_blank" rel="noopener" class="mt-2 btn-whatsapp text-xs justify-center">
+              WhatsApp
+            </a>
+          {% endif %}
+        </nav>
+      </div>
+    </div>
+  </header>
+
+  {# ===================== MAIN ===================== #}
+  <main class="flex-1">
+    {% if messages %}
+      <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 mt-4">
+        {% for message in messages %}
+          <div class="p-4
+            {% if message.tags == 'success' %}bg-[var(--color-ui-success-bg)] text-[var(--color-ui-success-text)]
+            {% elif message.tags == 'error' %}bg-[var(--color-ui-error-bg)] text-[var(--color-ui-error-text)]
+            {% elif message.tags == 'warning' %}bg-[var(--color-ui-warning-bg)] text-[var(--color-ui-warning-text)]
+            {% else %}bg-[var(--color-ui-info-bg)] text-[var(--color-ui-info-text)]
+            {% endif %}">
+            {{ message }}
+          </div>
+        {% endfor %}
+      </div>
+    {% endif %}
+
+    {% block content %}{% endblock %}
+  </main>
+
+  {# ===================== FOOTER ===================== #}
+  <footer class="bg-cms-surface-dark text-cms-text-inverse mt-24">
+    <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-16">
+      <div class="grid grid-cols-1 md:grid-cols-12 gap-10">
+        {# Col 1: Logo + tagline (4 cols) #}
+        <div class="md:col-span-4">
+          <div class="flex items-center gap-3 font-display text-2xl mb-4">
+            {% if site_config.logo %}
+              <img src="{{ site_config.logo.url }}" alt="{{ site_config.site_name }}" class="h-10 w-10 object-contain">
+            {% else %}
+              <span class="w-10 h-10 bg-cms-brand-secondary text-surface-dark flex items-center justify-center font-display text-xl">
+                {{ site_config.site_name|default:"C"|slice:":1"|upper }}
+              </span>
+            {% endif %}
+            {{ site_config.site_name|default:"Constructora" }}
+          </div>
+          {% if site_config.tagline %}
+            <p class="text-cms-border text-sm leading-relaxed mb-6 max-w-xs">{{ site_config.tagline }}</p>
+          {% endif %}
+          <address class="not-italic text-sm space-y-1 text-cms-border font-data">
+            {% if site_config.address_line1 %}<p>{{ site_config.address_line1 }}</p>{% endif %}
+            {% if site_config.address_line2 %}<p>{{ site_config.address_line2 }}</p>{% endif %}
+            {% if site_config.city %}<p>{{ site_config.city }}, {{ site_config.country }}</p>{% endif %}
+          </address>
+        </div>
+
+        {# Col 2: Contacto (3 cols) #}
+        <div class="md:col-span-3">
+          <h3 class="font-display uppercase tracking-widest text-xs mb-4 text-cms-brand-secondary">Contacto</h3>
+          <ul class="space-y-2 text-sm text-cms-border font-data">
+            {% if site_config.contact_phone %}<li><a href="tel:{{ site_config.contact_phone }}" class="hover:text-cms-brand-secondary">{{ site_config.contact_phone }}</a></li>{% endif %}
+            {% if site_config.contact_email %}<li><a href="mailto:{{ site_config.contact_email }}" class="hover:text-cms-brand-secondary break-all">{{ site_config.contact_email }}</a></li>{% endif %}
+            {% if site_config.contact_whatsapp %}<li><a href="https://wa.me/{{ site_config.contact_whatsapp }}" target="_blank" rel="noopener" class="hover:text-cms-brand-secondary">WhatsApp: +{{ site_config.contact_whatsapp }}</a></li>{% endif %}
+          </ul>
+          {% if site_config.facebook_url or site_config.instagram_url or site_config.linkedin_url %}
+            <h3 class="font-display uppercase tracking-widest text-xs mt-6 mb-3 text-cms-brand-secondary">Redes</h3>
+            <div class="flex gap-4 text-sm text-cms-border">
+              {% if site_config.facebook_url %}<a href="{{ site_config.facebook_url }}" target="_blank" rel="noopener" class="hover:text-cms-brand-secondary">Facebook</a>{% endif %}
+              {% if site_config.instagram_url %}<a href="{{ site_config.instagram_url }}" target="_blank" rel="noopener" class="hover:text-cms-brand-secondary">Instagram</a>{% endif %}
+              {% if site_config.linkedin_url %}<a href="{{ site_config.linkedin_url }}" target="_blank" rel="noopener" class="hover:text-cms-brand-secondary">LinkedIn</a>{% endif %}
+            </div>
+          {% endif %}
+        </div>
+
+        {# Col 3: Navegación (2 cols) #}
+        <div class="md:col-span-2">
+          <h3 class="font-display uppercase tracking-widest text-xs mb-4 text-cms-brand-secondary">Navegación</h3>
+          <ul class="space-y-2 text-sm text-cms-border">
+            <li><a href="{% url 'home' %}" class="hover:text-cms-brand-secondary">Inicio</a></li>
+            <li><a href="{% url 'page-about' %}" class="hover:text-cms-brand-secondary">Nosotros</a></li>
+            <li><a href="{% url 'page-services' %}" class="hover:text-cms-brand-secondary">Servicios</a></li>
+            <li><a href="{% url 'portfolio_list' %}" class="hover:text-cms-brand-secondary">Proyectos</a></li>
+            <li><a href="{% url 'testimonial_list' %}" class="hover:text-cms-brand-secondary">Testimonios</a></li>
+            <li><a href="{% url 'faq_list' %}" class="hover:text-cms-brand-secondary">FAQs</a></li>
+            <li><a href="{% url 'page-contact' %}" class="hover:text-cms-brand-secondary">Contacto</a></li>
+          </ul>
+        </div>
+
+        {# Col 4: Mapa o espacio (3 cols) #}
+        <div class="md:col-span-3">
+          <h3 class="font-display uppercase tracking-widest text-xs mb-4 text-cms-brand-secondary">Ubicación</h3>
+          {% if site_config.google_maps_embed_url %}
+            <div class="border border-cms-brand-primary-hover">
+              <iframe src="{{ site_config.google_maps_embed_url }}" width="100%" height="180" style="border:0;" allowfullscreen loading="lazy"></iframe>
+            </div>
+          {% else %}
+            <p class="text-sm text-cms-border">
+              {% if site_config.address_line1 %}{{ site_config.address_line1 }}{% endif %}
+              {% if site_config.city %}<br>{{ site_config.city }}, {{ site_config.country }}{% endif %}
+            </p>
+            <p class="text-xs text-text-cms-text-muted mt-3">Configurá el embed de Google Maps en Admin → Core configs.</p>
+          {% endif %}
+        </div>
+      </div>
+      <div class="border-t border-cms-brand-primary-hover mt-12 pt-6 flex flex-col md:flex-row items-center justify-between gap-3 text-xs text-cms-border font-data uppercase tracking-widest">
+        <span>© {% now "Y" %} {{ site_config.site_name|default:"Constructora" }}.</span>
+        <span>Hecho en Nicaragua</span>
+      </div>
+    </div>
+  </footer>
+
+</body>
+</html>

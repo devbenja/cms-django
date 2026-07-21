@@ -46,6 +46,16 @@ class CoreConfig(models.Model):
     # Footer
     footer_text = models.TextField('texto del footer', blank=True)
 
+    # Home stats (la firma del sitio: 4 numeros que transmiten escala)
+    stat_years = models.CharField('años de experiencia', max_length=10, blank=True, default='25+',
+                                  help_text='Número grande mostrado en el home. Ej: "25+"')
+    stat_works = models.CharField('cantidad de obras', max_length=10, blank=True, default='150+',
+                                  help_text='Ej: "150+"')
+    stat_departments = models.CharField('departamentos', max_length=10, blank=True, default='12',
+                                        help_text='Departamentos donde han construido. Ej: "12"')
+    stat_km = models.CharField('km construidos', max_length=10, blank=True, default='200+',
+                               help_text='Km de carreteras u obras lineales. Ej: "200+"')
+
     # Home featured gallery: subset of WorkPhoto chosen for the home page
     home_featured_photos = models.ManyToManyField(
         'portfolio.WorkPhoto',

@@ -1,0 +1,50 @@
+{% extends 'base.html' %}
+
+{% block title %}Proyectos — {{ site_config.site_name|default:"Constructora" }}{% endblock %}
+
+{% block content %}
+<section class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-20 md:py-28">
+  <div class="mb-16 max-w-3xl">
+    <p class="eyebrow text-cms-brand-secondary mb-4">Portafolio</p>
+    <h1 class="h-section text-cms-text-primary mb-6">Proyectos que hemos construido</h1>
+    <p class="text-lg text-text-cms-text-secondary leading-relaxed">
+      Cada obra es un compromiso con el cliente, con la comunidad y con el país. Acá una selección de los proyectos que hemos ejecutado.
+    </p>
+  </div>
+
+  {% if works %}
+    <div class="space-y-16 md:space-y-24">
+      {% for work in works %}
+        {# Layout alternado: impar = foto izquierda, par = foto derecha #}
+        <article class="grid grid-cols-1 md:grid-cols-12 gap-8 items-center {% if forloop.counter0|divisibleby:2 %}md:flex-row-reverse{% endif %}">
+          <div class="md:col-span-7 {% if forloop.counter0|divisibleby:2 %}md:col-start-6{% endif %}">
+            <a href="{% url 'portfolio_detail' work.slug %}" class="block group">
+              <div class="aspect-[4/3] overflow-hidden bg-cms-surface-alt">
+                {% if work.display_cover %}
+                  <img src="{{ work.display_cover.image.url }}" alt="{{ work.display_cover.alt_text }}" class="w-full h-full object-cover group-hover:scale-105 transition-transform duration-700">
+                {% endif %}
+              </div>
+            </a>
+          </div>
+          <div class="md:col-span-4 {% if forloop.counter0|divisibleby:2 %}md:col-start-1 md:row-start-1{% endif %}">
+            <p class="eyebrow text-cms-brand-secondary mb-3 font-data">{{ work.category.name }} · {{ work.year }}</p>
+            <h2 class="h-card text-cms-text-primary mb-3">
+              <a href="{% url 'portfolio_detail' work.slug %}" class="hover:text-cms-brand-primary transition-colors">{{ work.title }}</a>
+            </h2>
+            <p class="text-text-cms-text-secondary mb-4 leading-relaxed">{{ work.description_short|default:"" }}</p>
+            <p class="text-sm text-text-cms-text-muted font-data mb-6">{{ work.location }}</p>
+            <a href="{% url 'portfolio_detail' work.slug %}" class="link-underline font-semibold text-cms-brand-primary text-sm uppercase tracking-widest">
+              Ver proyecto →
+            </a>
+          </div>
+        </article>
+      {% endfor %}
+    </div>
+  {% else %}
+    <div class="text-center py-24 border-t border-cms-border">
+      <p class="eyebrow text-text-cms-text-muted mb-4">Sin proyectos</p>
+      <p class="text-xl text-text-cms-text-secondary">Aún no hay proyectos publicados.</p>
+    </div>
+  {% endif %}
+</section>
+{% endblock %}

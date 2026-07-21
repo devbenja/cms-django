@@ -1,0 +1,12 @@
+{# Block: video_embed (YouTube or Vimeo) #}
+{% if block.provider == 'youtube' %}
+  {% with video_id=block.url|slice:"31:" %}
+    <div class="my-8 aspect-video rounded-lg overflow-hidden shadow-md">
+      <iframe src="https://www.youtube.com/embed/{{ video_id }}" class="w-full h-full" frameborder="0" allowfullscreen loading="lazy"></iframe>
+    </div>
+  {% endwith %}
+{% elif block.provider == 'vimeo' %}
+  <div class="my-8 aspect-video rounded-lg overflow-hidden shadow-md">
+    <iframe src="{{ block.url }}" class="w-full h-full" frameborder="0" allowfullscreen loading="lazy"></iframe>
+  </div>
+{% endif %}

@@ -1,0 +1,10 @@
+{# Block: image — image_id is the WorkPhoto PK or generic image path #}
+{# For now this template expects a 'src' override via the block; image_id lookup is done in view #}
+<figure class="my-8">
+  {% if block.src %}
+    <img src="{{ block.src }}" alt="{{ block.alt|default:'' }}" class="w-full rounded-lg shadow-md">
+  {% endif %}
+  {% if block.caption %}
+    <figcaption class="text-sm text-text-cms-text-secondary text-center mt-2 italic">{{ block.caption }}</figcaption>
+  {% endif %}
+</figure>
