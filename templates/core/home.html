@@ -13,14 +13,14 @@
     {% elif site_config.hero_image %}
       <img src="{{ site_config.hero_image.url }}" alt="" class="w-full h-full object-cover opacity-40">
     {% else %}
-      <div class="w-full h-full bg-gradient-to-br from-surface-dark via-brand-primary-hover to-surface-dark"></div>
+      <div class="w-full h-full bg-gradient-to-br from-[#141414] via-[#2A2A2A] to-[#141414]"></div>
     {% endif %}
-    <div class="absolute inset-0 bg-gradient-to-t from-surface-dark via-surface-dark/40 to-transparent"></div>
+    <div class="absolute inset-0 bg-gradient-to-t from-[#141414] via-[#141414]/40 to-transparent"></div>
   </div>
 
   <div class="relative max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 min-h-[80vh] flex flex-col justify-end pb-16 md:pb-24">
     {% if site_config.tagline %}
-      <p class="eyebrow text-cms-brand-secondary mb-6">{{ site_config.tagline }}</p>
+      <p class="eyebrow mb-6">{{ site_config.tagline }}</p>
     {% endif %}
     <h1 class="h-display text-cms-text-inverse max-w-4xl mb-6">
       {{ site_config.hero_title|default:"Construimos Nicaragua desde 1998" }}
@@ -30,7 +30,7 @@
     {% endif %}
     <div class="flex flex-col sm:flex-row gap-3">
       {% if site_config.hero_cta_label and site_config.hero_cta_url %}
-        <a href="{{ site_config.hero_cta_url }}" class="btn-primary bg-inverse text-cms-brand-primary hover:bg-cms-surface-alt">
+        <a href="{{ site_config.hero_cta_url }}" class="btn-v3-brand">
           {{ site_config.hero_cta_label }}
         </a>
       {% endif %}
@@ -45,33 +45,32 @@
     <div class="grid grid-cols-2 md:grid-cols-4 gap-8 md:gap-4 text-center md:text-left">
       <div>
         <p class="stat-number">{{ site_config.stat_years|default:"25+" }}</p>
-        <p class="eyebrow text-text-cms-text-secondary mt-3">Años de experiencia</p>
+        <p class="eyebrow text-cms-text-cms-text-secondary mt-3">Años de experiencia</p>
       </div>
       <div>
         <p class="stat-number">{{ site_config.stat_works|default:"150+" }}</p>
-        <p class="eyebrow text-text-cms-text-secondary mt-3">Obras entregadas</p>
+        <p class="eyebrow text-cms-text-cms-text-secondary mt-3">Obras entregadas</p>
       </div>
       <div>
         <p class="stat-number">{{ site_config.stat_departments|default:"12" }}</p>
-        <p class="eyebrow text-text-cms-text-secondary mt-3">Departamentos</p>
+        <p class="eyebrow text-cms-text-cms-text-secondary mt-3">Departamentos</p>
       </div>
       <div>
         <p class="stat-number">{{ site_config.stat_km|default:"200+" }}</p>
-        <p class="eyebrow text-text-cms-text-secondary mt-3">Km construidos</p>
+        <p class="eyebrow text-cms-text-cms-text-secondary mt-3">Km construidos</p>
       </div>
     </div>
   </div>
 </section>
 
 {# ===================== MAPA DE NICARAGUA (firma #2) ===================== #}
-{# SVG inline con dots por obra. Es único, memorable, y demuestra oficio. #}
 <section class="bg-cms-surface-alt">
   <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-20 md:py-28">
     <div class="grid grid-cols-1 md:grid-cols-2 gap-12 items-center">
       <div>
-        <p class="eyebrow text-cms-brand-secondary mb-4">Presencia nacional</p>
+        <p class="eyebrow mb-4">Presencia nacional</p>
         <h2 class="h-section text-cms-text-primary mb-6">Dónde hemos construido</h2>
-        <p class="text-lg text-text-cms-text-secondary leading-relaxed mb-8 max-w-md">
+        <p class="text-lg text-cms-text-cms-text-secondary leading-relaxed mb-8 max-w-md">
           Desde Managua hasta la Costa Caribe, hemos ejecutado obras en {{ site_config.stat_departments|default:"12" }} departamentos del país.
           Carreteras, edificios, urbanizaciones: nuestra huella está en el territorio.
         </p>
@@ -81,42 +80,40 @@
       </div>
 
       <div class="relative">
-        {# SVG simplificado de Nicaragua. Paths aproximados - en producción iría un SVG real. #}
         <svg viewBox="0 0 200 280" class="w-full h-auto max-w-md mx-auto" fill="none" xmlns="http://www.w3.org/2000/svg" aria-label="Mapa de Nicaragua con obras">
           <path d="M40 20 L120 15 L160 35 L155 70 L170 100 L150 130 L155 160 L130 200 L100 240 L60 270 L40 250 L30 200 L35 150 L20 110 L25 70 Z"
-                fill="#FFFFFF" stroke="#002662" stroke-width="2"/>
-          {# Dots por obra (placeholder - en producción serían dinámicos) #}
+                fill="#FFFFFF" stroke="#141414" stroke-width="2"/>
           <g>
-            <circle cx="100" cy="80" r="5" fill="#4CB1E0"/>
-            <circle cx="100" cy="80" r="10" fill="#4CB1E0" opacity="0.3"/>
-            <text x="110" y="84" font-size="8" fill="#002662" font-weight="600">Managua</text>
+            <circle cx="100" cy="80" r="5" fill="#F5A524"/>
+            <circle cx="100" cy="80" r="10" fill="#F5A524" opacity="0.3"/>
+            <text x="110" y="84" font-size="8" fill="#141414" font-weight="600">Managua</text>
           </g>
           <g>
-            <circle cx="80" cy="50" r="4" fill="#4CB1E0"/>
-            <text x="88" y="54" font-size="7" fill="#002662" font-weight="600">León</text>
+            <circle cx="80" cy="50" r="4" fill="#F5A524"/>
+            <text x="88" y="54" font-size="7" fill="#141414" font-weight="600">León</text>
           </g>
           <g>
-            <circle cx="115" cy="110" r="4" fill="#4CB1E0"/>
-            <text x="123" y="114" font-size="7" fill="#002662" font-weight="600">Granada</text>
+            <circle cx="115" cy="110" r="4" fill="#F5A524"/>
+            <text x="123" y="114" font-size="7" fill="#141414" font-weight="600">Granada</text>
           </g>
           <g>
-            <circle cx="105" cy="30" r="4" fill="#4CB1E0"/>
-            <text x="113" y="34" font-size="7" fill="#002662" font-weight="600">Matagalpa</text>
+            <circle cx="105" cy="30" r="4" fill="#F5A524"/>
+            <text x="113" y="34" font-size="7" fill="#141414" font-weight="600">Matagalpa</text>
           </g>
           <g>
-            <circle cx="80" cy="20" r="3" fill="#4CB1E0"/>
-            <text x="88" y="24" font-size="7" fill="#002662" font-weight="600">Estelí</text>
+            <circle cx="80" cy="20" r="3" fill="#F5A524"/>
+            <text x="88" y="24" font-size="7" fill="#141414" font-weight="600">Estelí</text>
           </g>
           <g>
-            <circle cx="155" cy="180" r="4" fill="#4CB1E0"/>
-            <text x="163" y="184" font-size="7" fill="#002662" font-weight="600">RACCN</text>
+            <circle cx="155" cy="180" r="4" fill="#F5A524"/>
+            <text x="163" y="184" font-size="7" fill="#141414" font-weight="600">RACCN</text>
           </g>
           <g>
-            <circle cx="150" cy="240" r="3" fill="#4CB1E0"/>
-            <text x="158" y="244" font-size="7" fill="#002662" font-weight="600">RACS</text>
+            <circle cx="150" cy="240" r="3" fill="#F5A524"/>
+            <text x="158" y="244" font-size="7" fill="#141414" font-weight="600">RACS</text>
           </g>
         </svg>
-        <p class="text-xs text-text-cms-text-muted text-center mt-4 font-data">
+        <p class="text-xs text-cms-text-cms-text-muted text-center mt-4 font-data">
           {{ works_count|default:site_config.stat_departments|default:"12" }} puntos de obra en {{ site_config.stat_departments|default:"12" }} departamentos
         </p>
       </div>
@@ -129,7 +126,7 @@
 <section class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-20 md:py-28">
   <div class="flex items-end justify-between mb-12">
     <div>
-      <p class="eyebrow text-cms-brand-secondary mb-3">Portafolio</p>
+      <p class="eyebrow mb-3">Portafolio</p>
       <h2 class="h-section text-cms-text-primary">Proyectos recientes</h2>
     </div>
     <a href="{% url 'portfolio_list' %}" class="hidden md:inline-flex link-underline font-semibold text-cms-brand-primary">
@@ -144,9 +141,9 @@
             <img src="{{ work.display_cover.image.url }}" alt="{{ work.display_cover.alt_text }}" class="w-full h-full object-cover group-hover:scale-105 transition-transform duration-500">
           {% endif %}
         </div>
-        <p class="eyebrow text-cms-brand-secondary mb-2">{{ work.category.name }}</p>
-        <h3 class="h-card text-cms-text-primary group-hover:text-cms-brand-primary transition-colors mb-2">{{ work.title }}</h3>
-        <p class="text-sm text-text-cms-text-secondary font-data">{{ work.location }} · {{ work.year }}</p>
+        <p class="eyebrow mb-2">{{ work.category.name }}</p>
+        <h3 class="h-card text-cms-text-primary group-hover:text-cms-brand-secondary transition-colors mb-2">{{ work.title }}</h3>
+        <p class="text-sm text-cms-text-cms-text-secondary font-data">{{ work.location }} · {{ work.year }}</p>
       </a>
     {% endfor %}
   </div>
@@ -157,18 +154,18 @@
 {% if testimonials %}
 <section class="bg-cms-surface-dark text-cms-text-inverse">
   <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-20 md:py-28">
-    <p class="eyebrow text-cms-brand-secondary mb-4 text-center">Confían en nosotros</p>
+    <p class="eyebrow mb-4 text-center">Confían en nosotros</p>
     <h2 class="h-section text-cms-text-inverse mb-16 text-center">Lo que dicen nuestros clientes</h2>
     <div class="grid grid-cols-1 md:grid-cols-3 gap-12">
       {% for t in testimonials %}
         <div>
-          <svg class="w-10 h-10 text-cms-brand-secondary mb-6" fill="currentColor" viewBox="0 0 24 24"><path d="M6 17h3l2-4V7H5v6h3zm8 0h3l2-4V7h-6v6h3z"/></svg>
-          <p class="text-lg leading-relaxed mb-8 font-display">"{{ t.quote }}"</p>
+          <svg class="w-10 h-10 text-cms-brand-secondary mb-6" fill="currentColor" viewBox="0 0 24 24"><path d="M9.983 3v7.391c0 5.704-3.731 9.57-8.983 10.609l-.995-2.151c2.432-.917 3.995-3.638 3.995-5.849h-4v-10h9.983zm14.017 0v7.391c0 5.704-3.748 9.57-9 10.609l-.996-2.151c2.433-.917 3.996-3.638 3.996-5.849h-3.983v-10h9.983z"/></svg>
+          <p class="text-lg leading-relaxed mb-8">&ldquo;{{ t.quote }}&rdquo;</p>
           <div class="flex items-center gap-3 pt-6 border-t border-cms-brand-primary-hover">
             {% if t.client_photo %}
-              <img src="{{ t.client_photo.url }}" alt="{{ t.client_name }}" class="w-12 h-12 rounded-full object-cover">
+              <img src="{{ t.client_photo.url }}" alt="{{ t.client_name }}" class="w-12 h-12 object-cover">
             {% else %}
-              <div class="w-12 h-12 rounded-full bg-cms-brand-secondary text-surface-dark flex items-center justify-center font-display text-lg">
+              <div class="w-12 h-12 bg-cms-brand-secondary text-cms-surface-dark flex items-center justify-center font-anton text-lg">
                 {{ t.client_name|slice:":1"|upper }}
               </div>
             {% endif %}
@@ -189,9 +186,9 @@
 {# ===================== CTA FINAL ===================== #}
 <section class="bg-cms-canvas border-t border-cms-border">
   <div class="max-w-5xl mx-auto px-4 sm:px-6 lg:px-8 py-20 md:py-28 text-center">
-    <p class="eyebrow text-cms-brand-secondary mb-4">¿Tenés un proyecto en mente?</p>
+    <p class="eyebrow mb-4">¿Tenés un proyecto en mente?</p>
     <h2 class="h-section text-cms-text-primary mb-6">Hablemos de cómo hacerlo realidad.</h2>
-    <p class="text-lg text-text-cms-text-secondary max-w-2xl mx-auto mb-10">
+    <p class="text-lg text-cms-text-cms-text-secondary max-w-2xl mx-auto mb-10">
       Más de 25 años construyendo Nicaragua. Contactanos y te respondemos en menos de 24 horas.
     </p>
     <div class="flex flex-col sm:flex-row gap-3 justify-center">
