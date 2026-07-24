@@ -3,201 +3,226 @@
 
 {% block title %}{{ site_config.site_name|default:"Constructora" }} — {{ site_config.tagline|default:"" }}{% endblock %}
 
+{% block extra_head %}
+<style>
+  @keyframes marquee { from { transform: translateX(0); } to { transform: translateX(-50%); } }
+  .animate-marquee { animation: marquee 28s linear infinite; }
+</style>
+{% endblock %}
+
 {% block content %}
 
-{# ===================== HERO EDITORIAL ===================== #}
-<section class="relative bg-cms-surface-dark text-cms-text-inverse overflow-hidden">
-  <div class="absolute inset-0">
-    {% if featured_works and featured_works.0.display_cover %}
-      <img src="{{ featured_works.0.display_cover.image.url }}" alt="" class="w-full h-full object-cover opacity-40">
-    {% elif site_config.hero_image %}
-      <img src="{{ site_config.hero_image.url }}" alt="" class="w-full h-full object-cover opacity-40">
-    {% else %}
-      <div class="w-full h-full bg-gradient-to-br from-[#141414] via-[#2A2A2A] to-[#141414]"></div>
-    {% endif %}
-    <div class="absolute inset-0 bg-gradient-to-t from-[#141414] via-[#141414]/40 to-transparent"></div>
-  </div>
+{# ===================== HERO FULL-BLEED ===================== #}
+<section class="relative min-h-[92vh] overflow-hidden bg-[#141414]">
+  {% if featured_works and featured_works.0.display_cover %}
+    <img src="{{ featured_works.0.display_cover.image.url }}" alt="" class="absolute inset-0 h-full w-full object-cover opacity-55">
+  {% elif site_config.hero_image %}
+    <img src="{{ site_config.hero_image.url }}" alt="" class="absolute inset-0 h-full w-full object-cover opacity-55">
+  {% endif %}
+  <div class="absolute inset-0 bg-gradient-to-t from-[#141414] via-[#141414]/40 to-transparent"></div>
 
-  <div class="relative max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 min-h-[80vh] flex flex-col justify-end pb-16 md:pb-24">
-    {% if site_config.tagline %}
-      <p class="eyebrow mb-6">{{ site_config.tagline }}</p>
-    {% endif %}
-    <h1 class="h-display text-cms-text-inverse max-w-4xl mb-6">
-      {{ site_config.hero_title|default:"Construimos Nicaragua desde 1998" }}
+  <div class="relative mx-auto flex min-h-[92vh] max-w-7xl flex-col justify-end px-6 pb-16 pt-32">
+    <div class="mb-6 flex items-center gap-3">
+      <span class="h-px w-12 bg-[#F5A524]"></span>
+      <span class="text-xs uppercase tracking-[0.25em] text-[#F5A524]">{{ site_config.tagline|default:"Constructora · desde 1998" }}</span>
+    </div>
+    <h1 class="font-display max-w-5xl text-6xl leading-[0.88] text-white sm:text-7xl md:text-8xl lg:text-9xl">
+      {{ site_config.hero_title|default:"Construimos Nicaragua" }}
     </h1>
-    {% if site_config.hero_subtitle %}
-      <p class="text-lg md:text-2xl text-cms-border max-w-2xl leading-relaxed mb-10">{{ site_config.hero_subtitle }}</p>
-    {% endif %}
-    <div class="flex flex-col sm:flex-row gap-3">
-      {% if site_config.hero_cta_label and site_config.hero_cta_url %}
-        <a href="{{ site_config.hero_cta_url }}" class="btn-v3-brand">
-          {{ site_config.hero_cta_label }}
+    <div class="mt-8 flex flex-col items-start gap-8 md:flex-row md:items-end md:justify-between">
+      <p class="max-w-md text-lg text-white/70">
+        {{ site_config.hero_subtitle|default:"Diseñamos y construimos edificios, infraestructuras y espacios que definen el país. Rigor de ingeniería, ambición de arquitectura." }}
+      </p>
+      <div class="flex gap-3">
+        <a href="{% url 'portfolio_list' %}" class="flex items-center gap-2 bg-[#F5A524] px-6 py-4 text-sm uppercase tracking-wide text-[#1A1A1A] transition-colors hover:bg-white">
+          Ver obras
+          <svg class="w-4 h-4" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" d="M7 17L17 7M17 7H8M17 7v9"/></svg>
         </a>
-      {% endif %}
-      <a href="{% url 'page-contact' %}" class="btn-ghost">Contactar</a>
-    </div>
-  </div>
-</section>
-
-{# ===================== STATS (la firma del sitio) ===================== #}
-<section class="bg-cms-canvas border-y border-cms-border">
-  <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-12 md:py-16">
-    <div class="grid grid-cols-2 md:grid-cols-4 gap-8 md:gap-4 text-center md:text-left">
-      <div>
-        <p class="stat-number">{{ site_config.stat_years|default:"25+" }}</p>
-        <p class="eyebrow text-cms-text-cms-text-secondary mt-3">Años de experiencia</p>
-      </div>
-      <div>
-        <p class="stat-number">{{ site_config.stat_works|default:"150+" }}</p>
-        <p class="eyebrow text-cms-text-cms-text-secondary mt-3">Obras entregadas</p>
-      </div>
-      <div>
-        <p class="stat-number">{{ site_config.stat_departments|default:"12" }}</p>
-        <p class="eyebrow text-cms-text-cms-text-secondary mt-3">Departamentos</p>
-      </div>
-      <div>
-        <p class="stat-number">{{ site_config.stat_km|default:"200+" }}</p>
-        <p class="eyebrow text-cms-text-cms-text-secondary mt-3">Km construidos</p>
-      </div>
-    </div>
-  </div>
-</section>
-
-{# ===================== MAPA DE NICARAGUA (firma #2) ===================== #}
-<section class="bg-cms-surface-alt">
-  <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-20 md:py-28">
-    <div class="grid grid-cols-1 md:grid-cols-2 gap-12 items-center">
-      <div>
-        <p class="eyebrow mb-4">Presencia nacional</p>
-        <h2 class="h-section text-cms-text-primary mb-6">Dónde hemos construido</h2>
-        <p class="text-lg text-cms-text-cms-text-secondary leading-relaxed mb-8 max-w-md">
-          Desde Managua hasta la Costa Caribe, hemos ejecutado obras en {{ site_config.stat_departments|default:"12" }} departamentos del país.
-          Carreteras, edificios, urbanizaciones: nuestra huella está en el territorio.
-        </p>
-        <a href="{% url 'portfolio_list' %}" class="link-underline font-semibold text-cms-brand-primary">
-          Ver todos los proyectos →
+        <a href="{% url 'page-contact' %}" class="flex items-center gap-2 border border-white/30 px-6 py-4 text-sm uppercase tracking-wide text-white transition-colors hover:bg-white hover:text-[#141414]">
+          Contactar
         </a>
       </div>
-
-      <div class="relative">
-        <svg viewBox="0 0 200 280" class="w-full h-auto max-w-md mx-auto" fill="none" xmlns="http://www.w3.org/2000/svg" aria-label="Mapa de Nicaragua con obras">
-          <path d="M40 20 L120 15 L160 35 L155 70 L170 100 L150 130 L155 160 L130 200 L100 240 L60 270 L40 250 L30 200 L35 150 L20 110 L25 70 Z"
-                fill="#FFFFFF" stroke="#141414" stroke-width="2"/>
-          <g>
-            <circle cx="100" cy="80" r="5" fill="#F5A524"/>
-            <circle cx="100" cy="80" r="10" fill="#F5A524" opacity="0.3"/>
-            <text x="110" y="84" font-size="8" fill="#141414" font-weight="600">Managua</text>
-          </g>
-          <g>
-            <circle cx="80" cy="50" r="4" fill="#F5A524"/>
-            <text x="88" y="54" font-size="7" fill="#141414" font-weight="600">León</text>
-          </g>
-          <g>
-            <circle cx="115" cy="110" r="4" fill="#F5A524"/>
-            <text x="123" y="114" font-size="7" fill="#141414" font-weight="600">Granada</text>
-          </g>
-          <g>
-            <circle cx="105" cy="30" r="4" fill="#F5A524"/>
-            <text x="113" y="34" font-size="7" fill="#141414" font-weight="600">Matagalpa</text>
-          </g>
-          <g>
-            <circle cx="80" cy="20" r="3" fill="#F5A524"/>
-            <text x="88" y="24" font-size="7" fill="#141414" font-weight="600">Estelí</text>
-          </g>
-          <g>
-            <circle cx="155" cy="180" r="4" fill="#F5A524"/>
-            <text x="163" y="184" font-size="7" fill="#141414" font-weight="600">RACCN</text>
-          </g>
-          <g>
-            <circle cx="150" cy="240" r="3" fill="#F5A524"/>
-            <text x="158" y="244" font-size="7" fill="#141414" font-weight="600">RACS</text>
-          </g>
-        </svg>
-        <p class="text-xs text-cms-text-cms-text-muted text-center mt-4 font-data">
-          {{ works_count|default:site_config.stat_departments|default:"12" }} puntos de obra en {{ site_config.stat_departments|default:"12" }} departamentos
-        </p>
-      </div>
     </div>
   </div>
 </section>
 
-{# ===================== OBRAS DESTACADAS ===================== #}
-{% if featured_works %}
-<section class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-20 md:py-28">
-  <div class="flex items-end justify-between mb-12">
-    <div>
-      <p class="eyebrow mb-3">Portafolio</p>
-      <h2 class="h-section text-cms-text-primary">Proyectos recientes</h2>
+{# ===================== STATS BAND (ambar) ===================== #}
+<section class="bg-[#F5A524]">
+  <div class="mx-auto grid max-w-7xl grid-cols-2 divide-x divide-black/10 border-x border-black/10 md:grid-cols-4">
+    <div class="px-6 py-10">
+      <div class="font-display text-5xl leading-none text-[#141414] md:text-6xl">{{ site_config.stat_years|default:"25+" }}</div>
+      <div class="mt-2 text-xs uppercase tracking-widest text-[#141414]/70">Años de experiencia</div>
     </div>
-    <a href="{% url 'portfolio_list' %}" class="hidden md:inline-flex link-underline font-semibold text-cms-brand-primary">
-      Ver todos →
+    <div class="px-6 py-10">
+      <div class="font-display text-5xl leading-none text-[#141414] md:text-6xl">{{ site_config.stat_works|default:"150+" }}</div>
+      <div class="mt-2 text-xs uppercase tracking-widest text-[#141414]/70">Obras entregadas</div>
+    </div>
+    <div class="px-6 py-10">
+      <div class="font-display text-5xl leading-none text-[#141414] md:text-6xl">{{ site_config.stat_departments|default:"12" }}</div>
+      <div class="mt-2 text-xs uppercase tracking-widest text-[#141414]/70">Departamentos</div>
+    </div>
+    <div class="px-6 py-10">
+      <div class="font-display text-5xl leading-none text-[#141414] md:text-6xl">{{ site_config.stat_km|default:"200+" }}</div>
+      <div class="mt-2 text-xs uppercase tracking-widest text-[#141414]/70">Km construidos</div>
+    </div>
+  </div>
+</section>
+
+{# ===================== MARQUEE ===================== #}
+<section class="overflow-hidden border-y border-black/10 bg-[#141414] py-5">
+  <div class="flex animate-marquee gap-12 whitespace-nowrap">
+    {% for label in "12" %}
+      {% for s in "AB" %}{% endfor %}
+      <span class="font-display flex items-center gap-12 text-2xl uppercase text-white/30">Edificación <span class="text-[#F5A524]">◆</span></span>
+      <span class="font-display flex items-center gap-12 text-2xl uppercase text-white/30">Obra civil <span class="text-[#F5A524]">◆</span></span>
+      <span class="font-display flex items-center gap-12 text-2xl uppercase text-white/30">Diseño y arquitectura <span class="text-[#F5A524]">◆</span></span>
+      <span class="font-display flex items-center gap-12 text-2xl uppercase text-white/30">Remodelación <span class="text-[#F5A524]">◆</span></span>
+      <span class="font-display flex items-center gap-12 text-2xl uppercase text-white/30">Supervisión de obra <span class="text-[#F5A524]">◆</span></span>
+      <span class="font-display flex items-center gap-12 text-2xl uppercase text-white/30">Instalaciones <span class="text-[#F5A524]">◆</span></span>
+    {% endfor %}
+  </div>
+</section>
+
+{# ===================== INTRO STATEMENT ===================== #}
+<section class="mx-auto max-w-7xl px-6 py-24">
+  <div class="grid gap-12 md:grid-cols-12">
+    <div class="md:col-span-4">
+      <div class="mb-4 flex items-center gap-3">
+        <span class="h-px w-10 bg-[#F5A524]"></span>
+        <span class="text-xs uppercase tracking-[0.25em] text-[#6B6860]">Qué hacemos</span>
+      </div>
+    </div>
+    <div class="md:col-span-8">
+      <p class="text-3xl leading-tight text-[#141414] md:text-4xl">
+        Somos una constructora integral. Del primer boceto a la entrega de llaves, gestionamos cada fase con
+        <span class="text-[#F5A524]">precisión milimétrica</span> y una obsesión por la calidad que se ve en cada detalle.
+      </p>
+    </div>
+  </div>
+</section>
+
+{# ===================== SERVICIOS NUMERADOS ===================== #}
+<section class="border-t border-black/10">
+  <div class="mx-auto max-w-7xl px-6">
+    {% for s in services_rows %}{% endfor %}
+    <a href="{% url 'page-services' %}" class="group flex flex-col gap-4 border-b border-black/10 py-8 transition-colors hover:bg-[#F4F2EC] md:flex-row md:items-center md:gap-10 md:px-4">
+      <span class="font-display text-2xl text-[#6B6860]/50">01</span>
+      <h3 class="font-display text-3xl md:w-80 md:text-4xl text-[#141414]">Edificación</h3>
+      <p class="flex-1 text-[#6B6860]">Construcción de edificios residenciales y comerciales de principio a fin, con los más altos estándares.</p>
+      <svg class="h-6 w-6 shrink-0 text-[#6B6860] transition-all group-hover:translate-x-1 group-hover:text-[#F5A524]" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" d="M7 17L17 7M17 7H8M17 7v9"/></svg>
+    </a>
+    <a href="{% url 'page-services' %}" class="group flex flex-col gap-4 border-b border-black/10 py-8 transition-colors hover:bg-[#F4F2EC] md:flex-row md:items-center md:gap-10 md:px-4">
+      <span class="font-display text-2xl text-[#6B6860]/50">02</span>
+      <h3 class="font-display text-3xl md:w-80 md:text-4xl text-[#141414]">Obra civil</h3>
+      <p class="flex-1 text-[#6B6860]">Infraestructuras, viales, puentes y urbanizaciones que conectan y transforman el territorio.</p>
+      <svg class="h-6 w-6 shrink-0 text-[#6B6860] transition-all group-hover:translate-x-1 group-hover:text-[#F5A524]" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" d="M7 17L17 7M17 7H8M17 7v9"/></svg>
+    </a>
+    <a href="{% url 'page-services' %}" class="group flex flex-col gap-4 border-b border-black/10 py-8 transition-colors hover:bg-[#F4F2EC] md:flex-row md:items-center md:gap-10 md:px-4">
+      <span class="font-display text-2xl text-[#6B6860]/50">03</span>
+      <h3 class="font-display text-3xl md:w-80 md:text-4xl text-[#141414]">Diseño y arquitectura</h3>
+      <p class="flex-1 text-[#6B6860]">Proyectos arquitectónicos integrales, desde el concepto hasta el plano ejecutivo.</p>
+      <svg class="h-6 w-6 shrink-0 text-[#6B6860] transition-all group-hover:translate-x-1 group-hover:text-[#F5A524]" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" d="M7 17L17 7M17 7H8M17 7v9"/></svg>
+    </a>
+    <a href="{% url 'page-services' %}" class="group flex flex-col gap-4 border-b border-black/10 py-8 transition-colors hover:bg-[#F4F2EC] md:flex-row md:items-center md:gap-10 md:px-4">
+      <span class="font-display text-2xl text-[#6B6860]/50">04</span>
+      <h3 class="font-display text-3xl md:w-80 md:text-4xl text-[#141414]">Remodelación</h3>
+      <p class="flex-1 text-[#6B6860]">Renovamos y damos nueva vida a espacios existentes con precisión y calidad.</p>
+      <svg class="h-6 w-6 shrink-0 text-[#6B6860] transition-all group-hover:translate-x-1 group-hover:text-[#F5A524]" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" d="M7 17L17 7M17 7H8M17 7v9"/></svg>
+    </a>
+    <a href="{% url 'page-services' %}" class="group flex flex-col gap-4 border-b border-black/10 py-8 transition-colors hover:bg-[#F4F2EC] md:flex-row md:items-center md:gap-10 md:px-4">
+      <span class="font-display text-2xl text-[#6B6860]/50">05</span>
+      <h3 class="font-display text-3xl md:w-80 md:text-4xl text-[#141414]">Supervisión de obra</h3>
+      <p class="flex-1 text-[#6B6860]">Dirección y control integral de obra para cumplir plazos, presupuesto y calidad.</p>
+      <svg class="h-6 w-6 shrink-0 text-[#6B6860] transition-all group-hover:translate-x-1 group-hover:text-[#F5A524]" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" d="M7 17L17 7M17 7H8M17 7v9"/></svg>
+    </a>
+    <a href="{% url 'page-services' %}" class="group flex flex-col gap-4 border-b border-black/10 py-8 transition-colors hover:bg-[#F4F2EC] md:flex-row md:items-center md:gap-10 md:px-4">
+      <span class="font-display text-2xl text-[#6B6860]/50">06</span>
+      <h3 class="font-display text-3xl md:w-80 md:text-4xl text-[#141414]">Instalaciones</h3>
+      <p class="flex-1 text-[#6B6860]">Sistemas eléctricos, mecánicos y de fontanería diseñados para máxima eficiencia.</p>
+      <svg class="h-6 w-6 shrink-0 text-[#6B6860] transition-all group-hover:translate-x-1 group-hover:text-[#F5A524]" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" d="M7 17L17 7M17 7H8M17 7v9"/></svg>
     </a>
   </div>
-  <div class="grid grid-cols-1 md:grid-cols-2 gap-8">
-    {% for work in featured_works %}
-      <a href="{% url 'portfolio_detail' work.slug %}" class="group block">
-        <div class="aspect-[4/3] overflow-hidden bg-cms-surface-alt mb-4">
-          {% if work.display_cover %}
-            <img src="{{ work.display_cover.image.url }}" alt="{{ work.display_cover.alt_text }}" class="w-full h-full object-cover group-hover:scale-105 transition-transform duration-500">
-          {% endif %}
+</section>
+
+{# ===================== OBRAS — GRID ASIMETRICO ===================== #}
+{% if featured_works %}
+<section class="mx-auto max-w-7xl px-6 py-24">
+  <div class="mb-12 flex flex-wrap items-end justify-between gap-4">
+    <h2 class="font-display text-5xl md:text-6xl text-[#141414]">Obras<br>recientes</h2>
+    <a href="{% url 'portfolio_list' %}" class="flex items-center gap-2 text-sm uppercase tracking-wide text-[#141414] hover:text-[#F5A524]">
+      Todos los proyectos
+      <svg class="w-4 h-4" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" d="M5 12h14M13 6l6 6-6 6"/></svg>
+    </a>
+  </div>
+
+  <div class="grid grid-cols-1 gap-5 md:grid-cols-12">
+    {% for w in featured_works|slice:":6" %}
+      {% if forloop.counter0 == 0 %}
+        <a href="{% url 'portfolio_detail' w.slug %}" class="group relative block overflow-hidden bg-[#141414] md:col-span-7 md:h-[520px]">
+          {% if w.display_cover %}<img src="{{ w.display_cover.image.url }}" alt="{{ w.title }}" class="h-full min-h-[220px] w-full object-cover opacity-90 transition-all duration-700 group-hover:scale-105 group-hover:opacity-70">{% endif %}
+          <div class="absolute inset-0 bg-gradient-to-t from-[#141414]/90 via-transparent to-transparent"></div>
+          <div class="absolute inset-x-0 bottom-0 flex items-end justify-between p-6">
+            <div>
+              <span class="text-xs uppercase tracking-widest text-[#F5A524]">{{ w.category.name }} · {{ w.location }}</span>
+              <h3 class="font-display text-4xl md:text-5xl text-white">{{ w.title }}</h3>
+            </div>
+            <svg class="h-6 w-6 text-white transition-transform group-hover:translate-x-1 group-hover:-translate-y-1" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" d="M7 17L17 7M17 7H8M17 7v9"/></svg>
+          </div>
+        </a>
+        <div class="grid gap-5 md:col-span-5">
+          {% for w2 in featured_works|slice:"1:3" %}
+            <a href="{% url 'portfolio_detail' w2.slug %}" class="group relative block overflow-hidden bg-[#141414] md:h-[250px]">
+              {% if w2.display_cover %}<img src="{{ w2.display_cover.image.url }}" alt="{{ w2.title }}" class="h-full min-h-[220px] w-full object-cover opacity-90 transition-all duration-700 group-hover:scale-105 group-hover:opacity-70">{% endif %}
+              <div class="absolute inset-0 bg-gradient-to-t from-[#141414]/90 via-transparent to-transparent"></div>
+              <div class="absolute inset-x-0 bottom-0 flex items-end justify-between p-6">
+                <div>
+                  <span class="text-xs uppercase tracking-widest text-[#F5A524]">{{ w2.category.name }} · {{ w2.location }}</span>
+                  <h3 class="font-display text-2xl text-white">{{ w2.title }}</h3>
+                </div>
+                <svg class="h-6 w-6 text-white transition-transform group-hover:translate-x-1 group-hover:-translate-y-1" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" d="M7 17L17 7M17 7H8M17 7v9"/></svg>
+              </div>
+            </a>
+          {% endfor %}
         </div>
-        <p class="eyebrow mb-2">{{ work.category.name }}</p>
-        <h3 class="h-card text-cms-text-primary group-hover:text-cms-brand-secondary transition-colors mb-2">{{ work.title }}</h3>
-        <p class="text-sm text-cms-text-cms-text-secondary font-data">{{ work.location }} · {{ work.year }}</p>
-      </a>
+      {% elif forloop.counter0 >= 3 %}
+        <a href="{% url 'portfolio_detail' w.slug %}" class="group relative block overflow-hidden bg-[#141414] md:col-span-4 md:h-[360px]">
+          {% if w.display_cover %}<img src="{{ w.display_cover.image.url }}" alt="{{ w.title }}" class="h-full min-h-[220px] w-full object-cover opacity-90 transition-all duration-700 group-hover:scale-105 group-hover:opacity-70">{% endif %}
+          <div class="absolute inset-0 bg-gradient-to-t from-[#141414]/90 via-transparent to-transparent"></div>
+          <div class="absolute inset-x-0 bottom-0 flex items-end justify-between p-6">
+            <div>
+              <span class="text-xs uppercase tracking-widest text-[#F5A524]">{{ w.category.name }} · {{ w.location }}</span>
+              <h3 class="font-display text-2xl text-white">{{ w.title }}</h3>
+            </div>
+            <svg class="h-6 w-6 text-white transition-transform group-hover:translate-x-1 group-hover:-translate-y-1" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" d="M7 17L17 7M17 7H8M17 7v9"/></svg>
+          </div>
+        </a>
+      {% endif %}
     {% endfor %}
   </div>
 </section>
 {% endif %}
 
-{# ===================== TESTIMONIOS ===================== #}
+{# ===================== TESTIMONIAL CENTRADO ===================== #}
 {% if testimonials %}
-<section class="bg-cms-surface-dark text-cms-text-inverse">
-  <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-20 md:py-28">
-    <p class="eyebrow mb-4 text-center">Confían en nosotros</p>
-    <h2 class="h-section text-cms-text-inverse mb-16 text-center">Lo que dicen nuestros clientes</h2>
-    <div class="grid grid-cols-1 md:grid-cols-3 gap-12">
-      {% for t in testimonials %}
-        <div>
-          <svg class="w-10 h-10 text-cms-brand-secondary mb-6" fill="currentColor" viewBox="0 0 24 24"><path d="M9.983 3v7.391c0 5.704-3.731 9.57-8.983 10.609l-.995-2.151c2.432-.917 3.995-3.638 3.995-5.849h-4v-10h9.983zm14.017 0v7.391c0 5.704-3.748 9.57-9 10.609l-.996-2.151c2.433-.917 3.996-3.638 3.996-5.849h-3.983v-10h9.983z"/></svg>
-          <p class="text-lg leading-relaxed mb-8">&ldquo;{{ t.quote }}&rdquo;</p>
-          <div class="flex items-center gap-3 pt-6 border-t border-cms-brand-primary-hover">
-            {% if t.client_photo %}
-              <img src="{{ t.client_photo.url }}" alt="{{ t.client_name }}" class="w-12 h-12 object-cover">
-            {% else %}
-              <div class="w-12 h-12 bg-cms-brand-secondary text-cms-surface-dark flex items-center justify-center font-anton text-lg">
-                {{ t.client_name|slice:":1"|upper }}
-              </div>
-            {% endif %}
-            <div>
-              <p class="font-semibold">{{ t.client_name }}</p>
-              {% if t.client_role or t.client_company %}
-                <p class="text-xs text-cms-border font-data uppercase tracking-widest">{% if t.client_role %}{{ t.client_role }}{% endif %}{% if t.client_role and t.client_company %} · {% endif %}{% if t.client_company %}{{ t.client_company }}{% endif %}</p>
-              {% endif %}
-            </div>
-          </div>
-        </div>
-      {% endfor %}
-    </div>
-  </div>
-</section>
-{% endif %}
-
-{# ===================== CTA FINAL ===================== #}
-<section class="bg-cms-canvas border-t border-cms-border">
-  <div class="max-w-5xl mx-auto px-4 sm:px-6 lg:px-8 py-20 md:py-28 text-center">
-    <p class="eyebrow mb-4">¿Tenés un proyecto en mente?</p>
-    <h2 class="h-section text-cms-text-primary mb-6">Hablemos de cómo hacerlo realidad.</h2>
-    <p class="text-lg text-cms-text-cms-text-secondary max-w-2xl mx-auto mb-10">
-      Más de 25 años construyendo Nicaragua. Contactanos y te respondemos en menos de 24 horas.
-    </p>
-    <div class="flex flex-col sm:flex-row gap-3 justify-center">
-      <a href="{% url 'page-contact' %}" class="btn-primary">Contactanos</a>
-      {% if site_config.contact_whatsapp %}
-        <a href="https://wa.me/{{ site_config.contact_whatsapp }}" target="_blank" rel="noopener" class="btn-secondary">Escribinos por WhatsApp</a>
+{% with t=testimonials.0 %}
+<section class="bg-[#141414] text-white">
+  <div class="mx-auto max-w-5xl px-6 py-28 text-center">
+    <span class="font-display text-7xl text-[#F5A524]">&ldquo;</span>
+    <p class="font-display -mt-6 text-3xl leading-tight text-white md:text-5xl">{{ t.quote }}</p>
+    <div class="mt-10 flex items-center justify-center gap-4">
+      {% if t.client_photo %}
+        <img src="{{ t.client_photo.url }}" alt="{{ t.client_name }}" class="h-14 w-14 object-cover">
+      {% else %}
+        <span class="h-14 w-14 bg-[#F5A524] text-[#141414] flex items-center justify-center font-display text-xl">{{ t.client_name|slice:":1"|upper }}</span>
       {% endif %}
+      <div class="text-left">
+        <div class="uppercase tracking-wide">{{ t.client_name }}</div>
+        <div class="text-sm text-white/50">{{ t.client_role }}{% if t.client_company %}, {{ t.client_company }}{% endif %}</div>
+      </div>
     </div>
   </div>
 </section>
+{% endwith %}
+{% endif %}
 
 {% endblock %}
