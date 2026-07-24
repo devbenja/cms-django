@@ -3,25 +3,29 @@
 /* ===================================================================
    Custom tokens for the CMS. Plain CSS (no @apply, no @layer) so it
    works with the Tailwind CDN script without a build step.
+
+   Paleta v3: carbon (#141414) + ambar (#F5A524) + crema (#F4F2EC).
+   Las clases cms-* de base.html apuntan a estas variables, asi que
+   todo el sitio hereda el estilo v3 al cambiar los valores aqui.
    =================================================================== */
 
 :root {
   /* Grupo 1: Neutros */
   --color-canvas: #FFFFFF;
   --color-surface: #FFFFFF;
-  --color-surface-alt: #F8FAFC;
-  --color-surface-dark: #002662;
-  --color-border: #9DAFC8;
-  --color-text-primary: #0F172A;
-  --color-text-secondary: #475569;
-  --color-text-muted: #94A3B8;
+  --color-surface-alt: #F4F2EC;
+  --color-surface-dark: #141414;
+  --color-border: #E5E1D8;
+  --color-text-primary: #141414;
+  --color-text-secondary: #6B6860;
+  --color-text-muted: #9B968C;
   --color-text-inverse: #FFFFFF;
 
-  /* Grupo 2: Acento de marca */
-  --color-brand-primary: #002662;
-  --color-brand-primary-hover: #183A70;
-  --color-brand-secondary: #4CB1E0;
-  --color-brand-secondary-soft: #E0F4FB;
+  /* Grupo 2: Acento de marca (carbon + ambar) */
+  --color-brand-primary: #141414;
+  --color-brand-primary-hover: #2A2A2A;
+  --color-brand-secondary: #F5A524;
+  --color-brand-secondary-soft: #FBE7C2;
 
   /* Grupo 3: Estados de flujo editorial */
   --color-state-draft-bg: #F1F5F9;
@@ -42,9 +46,7 @@
   --color-ui-error-text: #991B1B;
 
   /* ============================================================
-     Version 3 — lenguaje editorial industrial (carbon + ambar)
-     Se usa en las paginas publicas: quienes-somos, servicios,
-     proyectos, testimonios.
+     Alias v3 (mismos valores que la marca; para hex directos)
      ============================================================ */
   --v3-ink: #141414;
   --v3-brand: #F5A524;
@@ -70,15 +72,15 @@ body {
 }
 
 /* ============================================================
-   Display faces
+   Display faces — Anton (v3) para todo el sitio
    ============================================================ */
 .font-display {
-  font-family: 'Archivo', 'Inter', system-ui, sans-serif;
-  font-weight: 900;
-  letter-spacing: -0.02em;
+  font-family: 'Anton', 'Archivo', 'Inter', system-ui, sans-serif;
+  font-weight: 400;
+  letter-spacing: 0.01em;
+  text-transform: uppercase;
 }
 
-/* Anton — display v3 (mayusculas, condensada) */
 .font-anton {
   font-family: 'Anton', 'Archivo', 'Inter', system-ui, sans-serif;
   font-weight: 400;
@@ -99,14 +101,13 @@ body {
   font-size: 0.75rem;
   font-weight: 600;
   text-transform: uppercase;
-  letter-spacing: 0.2em;
+  letter-spacing: 0.25em;
   font-variant-numeric: tabular-nums;
 }
 @media (min-width: 768px) {
   .eyebrow { font-size: 0.875rem; }
 }
 
-/* Eyebrow en estilo v3 (ambar) */
 .eyebrow-v3 {
   color: var(--v3-brand);
   font-size: 0.75rem;
@@ -120,45 +121,48 @@ body {
 }
 
 .h-display {
-  font-family: 'Archivo', 'Inter', system-ui, sans-serif;
-  font-weight: 900;
-  letter-spacing: -0.02em;
-  font-size: 2.25rem;
+  font-family: 'Anton', 'Archivo', system-ui, sans-serif;
+  font-weight: 400;
+  text-transform: uppercase;
+  letter-spacing: 0.01em;
+  font-size: 2.5rem;
   line-height: 0.95;
 }
 @media (min-width: 768px) {
-  .h-display { font-size: 3.75rem; }
+  .h-display { font-size: 4rem; }
 }
 @media (min-width: 1024px) {
-  .h-display { font-size: 4.5rem; }
+  .h-display { font-size: 5rem; }
 }
 
 .h-section {
-  font-family: 'Archivo', 'Inter', system-ui, sans-serif;
-  font-weight: 900;
-  letter-spacing: -0.02em;
-  font-size: 1.875rem;
-  line-height: 1.1;
+  font-family: 'Anton', 'Archivo', system-ui, sans-serif;
+  font-weight: 400;
+  text-transform: uppercase;
+  letter-spacing: 0.01em;
+  font-size: 2rem;
+  line-height: 1.02;
 }
 @media (min-width: 768px) {
   .h-section { font-size: 3rem; }
 }
 
 .h-card {
-  font-family: 'Archivo', 'Inter', system-ui, sans-serif;
-  font-weight: 700;
-  letter-spacing: -0.01em;
-  font-size: 1.25rem;
-  line-height: 1.2;
+  font-family: 'Anton', 'Archivo', system-ui, sans-serif;
+  font-weight: 400;
+  text-transform: uppercase;
+  letter-spacing: 0.01em;
+  font-size: 1.375rem;
+  line-height: 1.05;
 }
 @media (min-width: 768px) {
-  .h-card { font-size: 1.5rem; }
+  .h-card { font-size: 1.75rem; }
 }
 
 .stat-number {
-  font-family: 'Archivo', 'Inter', system-ui, sans-serif;
-  font-weight: 900;
-  letter-spacing: -0.02em;
+  font-family: 'Anton', 'Archivo', system-ui, sans-serif;
+  font-weight: 400;
+  letter-spacing: 0.01em;
   font-size: 3rem;
   line-height: 1;
   color: var(--color-brand-primary);
@@ -183,7 +187,7 @@ body {
   bottom: -2px;
   width: 100%;
   height: 2px;
-  background-color: var(--color-brand-primary);
+  background-color: var(--color-brand-secondary);
   transform-origin: left;
   transform: scaleX(0);
   transition: transform 0.3s ease;
@@ -193,28 +197,29 @@ body {
 }
 
 /* ============================================================
-   Buttons (sitio)
+   Buttons (sitio) — estilo v3
    ============================================================ */
 .btn-primary {
   display: inline-flex;
   align-items: center;
   justify-content: center;
   gap: 0.5rem;
-  padding: 0.75rem 1.5rem;
+  padding: 0.9rem 1.75rem;
   border-radius: 0;
   background-color: var(--color-brand-primary);
   color: var(--color-text-inverse);
   font-weight: 600;
-  letter-spacing: 0.05em;
+  letter-spacing: 0.08em;
   text-transform: uppercase;
-  font-size: 0.875rem;
+  font-size: 0.8125rem;
   text-decoration: none;
   border: 2px solid var(--color-brand-primary);
-  transition: background-color 0.2s, color 0.2s;
+  transition: background-color 0.2s, color 0.2s, border-color 0.2s;
 }
 .btn-primary:hover {
-  background-color: var(--color-brand-primary-hover);
-  border-color: var(--color-brand-primary-hover);
+  background-color: var(--color-brand-secondary);
+  border-color: var(--color-brand-secondary);
+  color: var(--v3-brand-ink);
 }
 
 .btn-secondary {
@@ -222,14 +227,14 @@ body {
   align-items: center;
   justify-content: center;
   gap: 0.5rem;
-  padding: 0.75rem 1.5rem;
+  padding: 0.9rem 1.75rem;
   border-radius: 0;
   background-color: transparent;
   color: var(--color-brand-primary);
   font-weight: 600;
-  letter-spacing: 0.05em;
+  letter-spacing: 0.08em;
   text-transform: uppercase;
-  font-size: 0.875rem;
+  font-size: 0.8125rem;
   text-decoration: none;
   border: 2px solid var(--color-brand-primary);
   transition: background-color 0.2s, color 0.2s;
@@ -244,26 +249,25 @@ body {
   align-items: center;
   justify-content: center;
   gap: 0.5rem;
-  padding: 0.75rem 1.5rem;
+  padding: 0.9rem 1.75rem;
   border-radius: 0;
   background-color: transparent;
   color: var(--color-text-inverse);
   font-weight: 600;
-  letter-spacing: 0.05em;
+  letter-spacing: 0.08em;
   text-transform: uppercase;
-  font-size: 0.875rem;
+  font-size: 0.8125rem;
   text-decoration: none;
   border: 2px solid var(--color-text-inverse);
   transition: background-color 0.2s, color 0.2s;
 }
 .btn-ghost:hover {
-  background-color: var(--color-text-inverse);
-  color: var(--color-brand-primary);
+  background-color: var(--color-brand-secondary);
+  border-color: var(--color-brand-secondary);
+  color: var(--v3-brand-ink);
 }
 
-/* ============================================================
-   Botones v3 (carbon / ambar)
-   ============================================================ */
+/* Botones v3 explicitos (hex directos) */
 .btn-v3-ink {
   display: inline-flex;
   align-items: center;
