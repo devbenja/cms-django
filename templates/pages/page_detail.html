@@ -6,28 +6,28 @@
 
 {% block content %}
 <!-- ============================================================
-     Cabecera editorial (hero oscuro)
+     Cabecera v3 (carbon + ambar + Anton)
      ============================================================ -->
-<section class="relative bg-cms-surface-dark text-cms-text-inverse overflow-hidden">
+<section class="relative bg-[#141414] text-white overflow-hidden">
   <span aria-hidden="true"
-        class="ghost-mark absolute -top-10 -right-4 md:-right-8 text-[10rem] md:text-[18rem] text-cms-text-inverse opacity-5">
+        class="ghost-mark absolute -top-8 -right-2 md:-right-6 text-[10rem] md:text-[18rem] text-white/5">
     {{ page.title|slice:":1"|upper }}
   </span>
 
   <div class="relative max-w-4xl mx-auto px-4 sm:px-6 lg:px-8 py-20 md:py-28">
     <nav aria-label="Breadcrumb" class="mb-8">
-      <ol class="flex items-center gap-2 text-sm text-cms-border">
-        <li><a href="/" class="hover:text-cms-brand-secondary transition-colors">Inicio</a></li>
-        <li aria-hidden="true" class="text-cms-border">/</li>
-        <li class="text-cms-text-inverse">{{ page.title }}</li>
+      <ol class="flex items-center gap-2 text-sm text-white/50">
+        <li><a href="/" class="hover:text-[#F5A524] transition-colors">Inicio</a></li>
+        <li aria-hidden="true" class="text-white/30">/</li>
+        <li class="text-white">{{ page.title }}</li>
       </ol>
     </nav>
 
-    <p class="eyebrow mb-4">Página</p>
-    <h1 class="h-display max-w-3xl">{{ page.title }}</h1>
+    <p class="eyebrow-v3 mb-4">Página</p>
+    <h1 class="font-anton text-5xl md:text-7xl max-w-3xl">{{ page.title }}</h1>
 
     {% if page.meta_description %}
-    <p class="text-lg text-cms-border max-w-2xl mt-6">{{ page.meta_description }}</p>
+    <p class="text-lg text-white/60 max-w-2xl mt-6">{{ page.meta_description }}</p>
     {% endif %}
   </div>
 </section>
