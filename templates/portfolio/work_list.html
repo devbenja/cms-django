@@ -5,26 +5,26 @@
 
 {% block content %}
 <!-- ============================================================
-     Cabecera editorial
+     Cabecera v3
      ============================================================ -->
-<section class="relative bg-cms-surface-dark text-cms-text-inverse overflow-hidden">
+<section class="relative bg-[#141414] text-white overflow-hidden">
   <span aria-hidden="true"
-        class="ghost-mark absolute -top-10 -right-4 md:-right-6 text-[10rem] md:text-[18rem] text-cms-text-inverse opacity-5">
-    &plus;
+        class="ghost-mark absolute -top-10 -right-2 md:-right-6 text-[11rem] md:text-[20rem] text-white/5">
+    03
   </span>
 
   <div class="relative max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-20 md:py-28">
     <nav aria-label="Breadcrumb" class="mb-8">
-      <ol class="flex items-center gap-2 text-sm text-cms-border">
-        <li><a href="/" class="hover:text-cms-brand-secondary transition-colors">Inicio</a></li>
-        <li aria-hidden="true">/</li>
-        <li class="text-cms-text-inverse">Proyectos</li>
+      <ol class="flex items-center gap-2 text-sm text-white/50">
+        <li><a href="/" class="hover:text-[#F5A524] transition-colors">Inicio</a></li>
+        <li aria-hidden="true" class="text-white/30">/</li>
+        <li class="text-white">Proyectos</li>
       </ol>
     </nav>
 
-    <p class="eyebrow mb-4">Portafolio</p>
-    <h1 class="h-display max-w-4xl">Proyectos que hemos construido</h1>
-    <p class="text-lg text-cms-border max-w-2xl mt-6">
+    <p class="eyebrow-v3 mb-4">Portafolio</p>
+    <h1 class="font-anton text-5xl md:text-7xl max-w-4xl">Proyectos que hemos construido</h1>
+    <p class="text-lg text-white/60 max-w-2xl mt-6">
       Cada obra es un compromiso con el cliente, con la comunidad y con el país.
       Acá una selección de los proyectos que hemos ejecutado.
     </p>
@@ -32,7 +32,7 @@
 </section>
 
 <!-- ============================================================
-     Listado editorial (layout alternado + indices)
+     Listado editorial (layout alternado + indices ambar)
      ============================================================ -->
 <section class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-16 md:py-24">
   {% if works %}
@@ -41,7 +41,7 @@
         <article class="grid grid-cols-1 md:grid-cols-12 gap-8 items-center">
           <div class="md:col-span-7 {% if forloop.counter0|divisibleby:2 %}md:col-start-6{% endif %}">
             <a href="{% url 'portfolio_detail' work.slug %}" class="block group">
-              <div class="aspect-[4/3] overflow-hidden bg-cms-surface-alt">
+              <div class="aspect-[4/3] overflow-hidden bg-[#F4F2EC]">
                 {% if work.display_cover %}
                   <img src="{{ work.display_cover.image.url }}" alt="{{ work.display_cover.alt_text }}"
                        class="w-full h-full object-cover group-hover:scale-105 transition-transform duration-700">
@@ -51,18 +51,16 @@
           </div>
           <div class="md:col-span-4 {% if forloop.counter0|divisibleby:2 %}md:col-start-1 md:row-start-1{% endif %}">
             <div class="flex items-baseline gap-4 mb-3">
-              <span class="ghost-mark text-4xl md:text-5xl text-cms-brand-secondary opacity-40 leading-none">
-                {{ forloop.counter|stringformat:"02d" }}
-              </span>
-              <p class="eyebrow text-cms-brand-secondary font-data">{{ work.category.name }} · {{ work.year }}</p>
+              <span class="font-anton text-4xl md:text-5xl text-[#F5A524]">{{ forloop.counter|stringformat:"02d" }}</span>
+              <p class="eyebrow-v3 font-data">{{ work.category.name }} · {{ work.year }}</p>
             </div>
-            <h2 class="h-card text-cms-text-primary mb-3">
-              <a href="{% url 'portfolio_detail' work.slug %}" class="hover:text-cms-brand-primary transition-colors">{{ work.title }}</a>
+            <h2 class="font-anton text-3xl md:text-4xl text-[#141414] mb-3">
+              <a href="{% url 'portfolio_detail' work.slug %}" class="hover:text-[#F5A524] transition-colors">{{ work.title }}</a>
             </h2>
-            <p class="text-text-cms-text-secondary mb-4 leading-relaxed">{{ work.description_short|default:"" }}</p>
-            <p class="text-sm text-text-cms-text-muted font-data mb-6">{{ work.location }}</p>
+            <p class="text-[#6B6860] mb-4 leading-relaxed">{{ work.description_short|default:"" }}</p>
+            <p class="text-sm text-[#6B6860] font-data mb-6">{{ work.location }}</p>
             <a href="{% url 'portfolio_detail' work.slug %}"
-               class="link-underline font-semibold text-cms-brand-primary text-sm uppercase tracking-widest">
+               class="link-underline font-semibold text-[#141414] text-sm uppercase tracking-widest">
               Ver proyecto →
             </a>
           </div>
@@ -70,9 +68,9 @@
       {% endfor %}
     </div>
   {% else %}
-    <div class="text-center py-24 border-t border-cms-border">
-      <p class="eyebrow text-text-cms-text-muted mb-4">Sin proyectos</p>
-      <p class="text-xl text-text-cms-text-secondary">Aún no hay proyectos publicados.</p>
+    <div class="text-center py-24 border-t border-black/10">
+      <p class="eyebrow-v3 mb-4">Sin proyectos</p>
+      <p class="text-xl text-[#6B6860]">Aún no hay proyectos publicados.</p>
     </div>
   {% endif %}
 </section>
