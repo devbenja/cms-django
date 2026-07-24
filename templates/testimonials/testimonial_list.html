@@ -1,42 +1,136 @@
 {% extends 'base.html' %}
 
-{% block title %}Testimonios — {{ site_config.site_name|default:"Constructora" }}{% endblock %}
+{% block title %}Testimonios — {{ site_config.site_name }}{% endblock %}
+{% block meta_description %}Lo que dicen nuestros clientes sobre las obras que hemos construido junto a ellos.{% endblock %}
 
 {% block content %}
-<section class="max-w-5xl mx-auto px-4 sm:px-6 lg:px-8 py-12">
-  <div class="mb-10 text-center">
-    <p class="text-cms-brand-secondary text-sm font-semibold uppercase tracking-wider mb-2">Confían en nosotros</p>
-    <h1 class="text-3xl md:text-5xl font-bold text-cms-text-primary font-data">Testimonios</h1>
+<!-- ============================================================
+     Cabecera editorial
+     ============================================================ -->
+<section class="relative bg-cms-surface-dark text-cms-text-inverse overflow-hidden">
+  <span aria-hidden="true"
+        class="ghost-mark absolute -top-24 right-2 md:right-10 text-[18rem] md:text-[30rem] text-cms-text-inverse opacity-5">
+    &ldquo;
+  </span>
+
+  <div class="relative max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-20 md:py-28">
+    <nav aria-label="Breadcrumb" class="mb-8">
+      <ol class="flex items-center gap-2 text-sm text-cms-border">
+        <li><a href="/" class="hover:text-cms-brand-secondary transition-colors">Inicio</a></li>
+        <li aria-hidden="true">/</li>
+        <li class="text-cms-text-inverse">Testimonios</li>
+      </ol>
+    </nav>
+
+    <p class="eyebrow mb-4">Confían en nosotros</p>
+    <h1 class="h-display max-w-4xl">La confianza se construye obra a obra</h1>
+    <p class="text-lg text-cms-border max-w-2xl mt-6">
+      Promotores, instituciones y clientes que han apostado por nosotros y volverían a hacerlo.
+    </p>
   </div>
-  {% if testimonials %}
-    <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
-      {% for t in testimonials %}
-        <div class="bg-cms-surface rounded-lg p-6 shadow-sm border border-cms-border">
-          <svg class="w-8 h-8 text-cms-brand-secondary mb-3" fill="currentColor" viewBox="0 0 24 24"><path d="M6 17h3l2-4V7H5v6h3zm8 0h3l2-4V7h-6v6h3z"/></svg>
-          <p class="text-text-cms-text-primary italic mb-4 leading-relaxed">"{{ t.quote }}"</p>
-          <div class="flex items-center gap-3 pt-3 border-t border-cms-border">
-            {% if t.client_photo %}
-              <img src="{{ t.client_photo.url }}" alt="{{ t.client_name }}" class="w-12 h-12 rounded-full object-cover">
-            {% else %}
-              <div class="w-12 h-12 rounded-full bg-cms-brand-secondary-soft flex items-center justify-center text-cms-brand-primary font-semibold">
-                {{ t.client_name|slice:":1"|upper }}
-              </div>
-            {% endif %}
-            <div>
-              <p class="font-semibold text-cms-text-primary">{{ t.client_name }}</p>
-              {% if t.client_role or t.client_company %}
-                <p class="text-sm text-text-cms-text-secondary">{% if t.client_role %}{{ t.client_role }}{% endif %}{% if t.client_role and t.client_company %}, {% endif %}{% if t.client_company %}{{ t.client_company }}{% endif %}</p>
-              {% endif %}
-              {% if t.related_work %}
-                <p class="text-xs text-text-cms-text-muted mt-1">Proyecto: <a href="{% url 'portfolio_detail' t.related_work.slug %}" class="text-cms-brand-primary hover:underline">{{ t.related_work.title }}</a></p>
-              {% endif %}
-            </div>
+</section>
+
+{% if testimonials %}
+{% with featured=testimonials.0 %}
+<!-- ============================================================
+     Testimonio destacado
+     ============================================================ -->
+<section class="bg-cms-surface-alt">
+  <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-16 md:py-24">
+    <div class="grid grid-cols-1 lg:grid-cols-5 gap-10 items-center">
+      <div class="lg:col-span-3">
+        <svg class="w-12 h-12 text-cms-brand-secondary mb-6" fill="currentColor" viewBox="0 0 24 24" aria-hidden="true">
+          <path d="M9.983 3v7.391c0 5.704-3.731 9.57-8.983 10.609l-.995-2.151c2.432-.917 3.995-3.638 3.995-5.849h-4v-10h9.983zm14.017 0v7.391c0 5.704-3.748 9.57-9 10.609l-.996-2.151c2.433-.917 3.996-3.638 3.996-5.849h-3.983v-10h9.983z"/>
+        </svg>
+        <p class="h-card font-display text-cms-text-primary leading-tight">
+          &ldquo;{{ featured.quote }}&rdquo;
+        </p>
+        <div class="flex items-center gap-4 mt-8">
+          {% if featured.client_photo %}
+          <img src="{{ featured.client_photo.url }}" alt="{{ featured.client_name }}"
+               class="w-16 h-16 object-cover">
+          {% else %}
+          <span class="w-16 h-16 flex items-center justify-center bg-cms-brand-secondary text-cms-surface-dark font-display text-2xl">
+            {{ featured.client_name|slice:":1"|upper }}
+          </span>
+          {% endif %}
+          <div>
+            <p class="font-semibold text-cms-text-primary">{{ featured.client_name }}</p>
+            <p class="text-sm text-text-cms-text-secondary">
+              {{ featured.client_role }}{% if featured.client_company %} · {{ featured.client_company }}{% endif %}
+            </p>
           </div>
         </div>
-      {% endfor %}
+      </div>
+      <div class="lg:col-span-2">
+        {% if featured.client_photo %}
+        <img src="{{ featured.client_photo.url }}" alt="{{ featured.client_name }}"
+             class="w-full h-72 lg:h-96 object-cover">
+        {% else %}
+        <div class="w-full h-72 lg:h-96 bg-cms-surface-dark flex items-center justify-center">
+          <span class="ghost-mark text-[10rem] text-cms-text-inverse opacity-10">&ldquo;</span>
+        </div>
+        {% endif %}
+      </div>
     </div>
-  {% else %}
-    <p class="text-center text-text-cms-text-secondary py-16">Aún no hay testimonios publicados.</p>
-  {% endif %}
+  </div>
+</section>
+
+<!-- ============================================================
+     Rejilla de testimonios (lineas divisorias, sin cards)
+     ============================================================ -->
+{% if testimonials|length > 1 %}
+<section class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-16 md:py-24">
+  <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-px bg-cms-border border border-cms-border">
+    {% for t in testimonials|slice:"1:" %}
+    <article class="bg-cms-canvas p-8 md:p-10 flex flex-col">
+      <svg class="w-8 h-8 text-cms-brand-secondary mb-5" fill="currentColor" viewBox="0 0 24 24" aria-hidden="true">
+        <path d="M9.983 3v7.391c0 5.704-3.731 9.57-8.983 10.609l-.995-2.151c2.432-.917 3.995-3.638 3.995-5.849h-4v-10h9.983zm14.017 0v7.391c0 5.704-3.748 9.57-9 10.609l-.996-2.151c2.433-.917 3.996-3.638 3.996-5.849h-3.983v-10h9.983z"/>
+      </svg>
+      <p class="text-lg text-cms-text-primary leading-relaxed flex-1">
+        &ldquo;{{ t.quote }}&rdquo;
+      </p>
+      <div class="flex items-center gap-4 mt-8 pt-6 border-t border-cms-border">
+        {% if t.client_photo %}
+        <img src="{{ t.client_photo.url }}" alt="{{ t.client_name }}"
+             class="w-12 h-12 object-cover">
+        {% else %}
+        <span class="w-12 h-12 flex items-center justify-center bg-cms-brand-secondary-soft text-cms-brand-primary font-display text-lg">
+          {{ t.client_name|slice:":1"|upper }}
+        </span>
+        {% endif %}
+        <div class="min-w-0">
+          <p class="font-semibold text-cms-text-primary truncate">{{ t.client_name }}</p>
+          <p class="text-sm text-text-cms-text-secondary truncate">
+            {{ t.client_role }}{% if t.client_company %} · {{ t.client_company }}{% endif %}
+          </p>
+          {% if t.related_work %}
+          <a href="{% url 'portfolio_detail' t.related_work.slug %}"
+             class="text-sm text-cms-brand-secondary hover:underline">
+            Ver obra relacionada →
+          </a>
+          {% endif %}
+        </div>
+      </div>
+    </article>
+    {% endfor %}
+  </div>
+</section>
+{% endif %}
+{% endwith %}
+{% else %}
+<section class="max-w-4xl mx-auto px-4 sm:px-6 lg:px-8 py-24 text-center">
+  <p class="text-lg text-text-cms-text-secondary">Aún no hay testimonios publicados.</p>
+</section>
+{% endif %}
+
+<!-- ============================================================
+     CTA final
+     ============================================================ -->
+<section class="bg-cms-brand-secondary">
+  <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-16 flex flex-col md:flex-row md:items-center md:justify-between gap-6">
+    <h2 class="h-section text-cms-surface-dark max-w-xl">Sé nuestro próximo caso de éxito</h2>
+    <a href="{% url 'page-contact' 'contacto' %}" class="btn-primary">Hablemos</a>
+  </div>
 </section>
 {% endblock %}
