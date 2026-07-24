@@ -1,8 +1,8 @@
+@import url("https://fonts.googleapis.com/css2?family=Anton&display=swap");
+
 /* ===================================================================
    Custom tokens for the CMS. Plain CSS (no @apply, no @layer) so it
    works with the Tailwind CDN script without a build step.
-   Tailwind CDN reads :root variables and generates classes like
-   bg-canvas, text-primary, etc. by scanning the HTML.
    =================================================================== */
 
 :root {
@@ -40,6 +40,18 @@
   --color-ui-warning-text: #92400E;
   --color-ui-error-bg: #FEE2E2;
   --color-ui-error-text: #991B1B;
+
+  /* ============================================================
+     Version 3 — lenguaje editorial industrial (carbon + ambar)
+     Se usa en las paginas publicas: quienes-somos, servicios,
+     proyectos, testimonios.
+     ============================================================ */
+  --v3-ink: #141414;
+  --v3-brand: #F5A524;
+  --v3-brand-ink: #1A1A1A;
+  --v3-cream: #F4F2EC;
+  --v3-muted: #6B6860;
+  --v3-line: rgba(0, 0, 0, 0.10);
 }
 
 /* ============================================================
@@ -58,12 +70,21 @@ body {
 }
 
 /* ============================================================
-   Display face (Archivo) for hero, big numbers, H1
+   Display faces
    ============================================================ */
 .font-display {
   font-family: 'Archivo', 'Inter', system-ui, sans-serif;
   font-weight: 900;
   letter-spacing: -0.02em;
+}
+
+/* Anton — display v3 (mayusculas, condensada) */
+.font-anton {
+  font-family: 'Anton', 'Archivo', 'Inter', system-ui, sans-serif;
+  font-weight: 400;
+  letter-spacing: 0.01em;
+  text-transform: uppercase;
+  line-height: 0.95;
 }
 
 .font-data {
@@ -83,6 +104,19 @@ body {
 }
 @media (min-width: 768px) {
   .eyebrow { font-size: 0.875rem; }
+}
+
+/* Eyebrow en estilo v3 (ambar) */
+.eyebrow-v3 {
+  color: var(--v3-brand);
+  font-size: 0.75rem;
+  font-weight: 600;
+  text-transform: uppercase;
+  letter-spacing: 0.25em;
+  font-variant-numeric: tabular-nums;
+}
+@media (min-width: 768px) {
+  .eyebrow-v3 { font-size: 0.875rem; }
 }
 
 .h-display {
@@ -159,7 +193,7 @@ body {
 }
 
 /* ============================================================
-   Components
+   Buttons (sitio)
    ============================================================ */
 .btn-primary {
   display: inline-flex;
@@ -227,6 +261,55 @@ body {
   color: var(--color-brand-primary);
 }
 
+/* ============================================================
+   Botones v3 (carbon / ambar)
+   ============================================================ */
+.btn-v3-ink {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  gap: 0.5rem;
+  padding: 0.9rem 1.75rem;
+  border-radius: 0;
+  background-color: var(--v3-ink);
+  color: #FFFFFF;
+  font-weight: 600;
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+  font-size: 0.8125rem;
+  text-decoration: none;
+  border: 2px solid var(--v3-ink);
+  transition: background-color 0.2s, color 0.2s, border-color 0.2s;
+}
+.btn-v3-ink:hover {
+  background-color: var(--v3-brand);
+  border-color: var(--v3-brand);
+  color: var(--v3-brand-ink);
+}
+
+.btn-v3-brand {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  gap: 0.5rem;
+  padding: 0.9rem 1.75rem;
+  border-radius: 0;
+  background-color: var(--v3-brand);
+  color: var(--v3-brand-ink);
+  font-weight: 600;
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+  font-size: 0.8125rem;
+  text-decoration: none;
+  border: 2px solid var(--v3-brand);
+  transition: background-color 0.2s, color 0.2s;
+}
+.btn-v3-brand:hover {
+  background-color: var(--v3-ink);
+  border-color: var(--v3-ink);
+  color: #FFFFFF;
+}
+
 .btn-whatsapp {
   display: inline-flex;
   align-items: center;
@@ -282,20 +365,19 @@ body {
    Ghost number / decorative giant type (page headers)
    ============================================================ */
 .ghost-mark {
-  font-family: 'Archivo', 'Inter', system-ui, sans-serif;
-  font-weight: 900;
+  font-family: 'Anton', 'Archivo', 'Inter', system-ui, sans-serif;
+  font-weight: 400;
   line-height: 0.8;
   pointer-events: none;
   user-select: none;
 }
 
 /* ============================================================
-   Prose content — estilo editorial audaz para el contenido de
-   bloques del CMS (paginas Quienes somos, Servicios, Contacto).
-   Da jerarquia fuerte a headings y listas sin tocar los datos.
+   Prose content — estilo v3 (Anton + ambar) para el contenido
+   de bloques del CMS (Quienes somos, Servicios, Contacto).
    ============================================================ */
 .prose-content {
-  color: var(--color-text-secondary);
+  color: var(--v3-muted);
   font-size: 1.0625rem;
   line-height: 1.75;
 }
@@ -303,29 +385,31 @@ body {
   margin-top: 1.25rem;
 }
 .prose-content h2 {
-  font-family: 'Archivo', 'Inter', system-ui, sans-serif;
-  font-weight: 900;
-  letter-spacing: -0.02em;
-  font-size: 1.875rem;
-  line-height: 1.1;
-  color: var(--color-text-primary);
+  font-family: 'Anton', 'Archivo', system-ui, sans-serif;
+  font-weight: 400;
+  text-transform: uppercase;
+  letter-spacing: 0.01em;
+  font-size: 2rem;
+  line-height: 1;
+  color: var(--v3-ink);
   margin-top: 3.5rem;
   padding-top: 1.5rem;
-  border-top: 3px solid var(--color-brand-secondary);
+  border-top: 3px solid var(--v3-brand);
 }
 .prose-content > h2:first-child {
   margin-top: 0;
 }
 @media (min-width: 768px) {
-  .prose-content h2 { font-size: 2.25rem; }
+  .prose-content h2 { font-size: 2.75rem; }
 }
 .prose-content h3 {
-  font-family: 'Archivo', 'Inter', system-ui, sans-serif;
-  font-weight: 700;
-  letter-spacing: -0.01em;
-  font-size: 1.375rem;
-  line-height: 1.2;
-  color: var(--color-brand-primary);
+  font-family: 'Anton', 'Archivo', system-ui, sans-serif;
+  font-weight: 400;
+  text-transform: uppercase;
+  letter-spacing: 0.01em;
+  font-size: 1.5rem;
+  line-height: 1.05;
+  color: var(--v3-ink);
   margin-top: 2.5rem;
   display: flex;
   align-items: center;
@@ -336,17 +420,19 @@ body {
   display: inline-block;
   width: 1.75rem;
   height: 3px;
-  background-color: var(--color-brand-secondary);
+  background-color: var(--v3-brand);
   flex: none;
 }
 .prose-content strong {
-  color: var(--color-text-primary);
+  color: var(--v3-ink);
   font-weight: 700;
 }
 .prose-content a {
-  color: var(--color-brand-primary);
+  color: var(--v3-ink);
   text-decoration: underline;
-  text-underline-offset: 2px;
+  text-decoration-color: var(--v3-brand);
+  text-underline-offset: 3px;
+  text-decoration-thickness: 2px;
 }
 .prose-content ul,
 .prose-content ol {
@@ -367,7 +453,7 @@ body {
   top: 0.65em;
   width: 0.6rem;
   height: 0.6rem;
-  background-color: var(--color-brand-secondary);
+  background-color: var(--v3-brand);
 }
 .prose-content ol {
   counter-reset: prose-item;
@@ -383,10 +469,10 @@ body {
   position: absolute;
   left: 0;
   top: 0;
-  font-family: 'Archivo', 'Inter', system-ui, sans-serif;
-  font-weight: 900;
-  font-size: 1.05rem;
-  color: var(--color-brand-secondary);
+  font-family: 'Anton', 'Archivo', system-ui, sans-serif;
+  font-weight: 400;
+  font-size: 1.15rem;
+  color: var(--v3-brand);
   font-variant-numeric: tabular-nums;
 }
 
